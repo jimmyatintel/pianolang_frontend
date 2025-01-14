@@ -1,0 +1,27 @@
+Table td img {
+    width: auto;
+    height: 6rem;
+}
+tbody, td, tfoot, th, thead, tr {
+    vertical-align: middle;
+}
+.cartSum h5 {
+    border-bottom: 1px solid #f4ecec;
+}
+.btnFacebook {
+    background-color: #3b5998;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the left */
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  
+  .btnFacebook .fa-facebook {
+    margin-right: 30%;
+  }
