@@ -23,7 +23,7 @@ const Registration = ({ user}) => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://114.35.143.75:5000/registry', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/registry', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

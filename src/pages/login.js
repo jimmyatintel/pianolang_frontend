@@ -38,7 +38,7 @@ function LoginPage(){
         console.log('Login button clicked');
         const user = { email:email, password:password };
         try {
-            const response = await fetch('http://114.35.143.75:5000/login', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/login', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

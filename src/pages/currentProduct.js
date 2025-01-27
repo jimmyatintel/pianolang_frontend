@@ -21,7 +21,7 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
   useEffect(() => {
     const fetchProduct = async () => {
       console.log(id);
-      const response = await fetch(`http://114.35.143.75:5000/api/getsonginfo?id=${id}`);
+      const response = await fetch(process.env.REACT_APP_API_URL+`/api/getsonginfo?id=${id}`);
       const data = await response.json();
       console.log(data);
       if (data.description) {
@@ -78,9 +78,9 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
             activeColor="#ffd700"
           />
           <hr></hr>
-          <Card.Text className="price-new mb-0">{currentItem.price} NTD</Card.Text>
+          <Card.Text className="price-new mb-0">$ {currentItem.price} NTD</Card.Text>
           <Card.Text className="price-old" style={priceOld}>
-            110
+           $110
           </Card.Text>
           <hr></hr>
           <Card.Text>{currentItem.description}</Card.Text>
@@ -101,7 +101,7 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
               size="sm"
               onClick={(e) => addToCart(e, currentItem, currentItem.id)}
             >
-              Add To Cart
+              加入購物車
             </Button>
           </ButtonGroup>
         </Card.Body>

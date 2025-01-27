@@ -27,19 +27,19 @@ function ProductTabs(props) {
   }, [key,weekslides,monthslides,dayslides]);
   React.useEffect(() => {
     const fetchMonth = async () => {
-      const response = await fetch(`http://114.35.143.75:5000/api/gettopmonth`);
+      const response = await fetch(process.env.REACT_APP_API_URL + `/api/gettopmonth`);
       const data = await response.json();
       console.log(data);
       setmonthslides(data);
     };
     const fetchDay = async () => {
-      const response = await fetch(`http://114.35.143.75:5000/api/gettopday`);
+      const response = await fetch(process.env.REACT_APP_API_URL+`/api/gettopday`);
       const data = await response.json();
       console.log(data);
       setdayslides(data);
     };
     const fetchWeek = async () => {
-      const response = await fetch(`http://114.35.143.75:5000/api/gettopweek`);
+      const response = await fetch(process.env.REACT_APP_API_URL+`/api/gettopweek`);
       const data = await response.json();
       console.log(data);
       setweekslides(data);

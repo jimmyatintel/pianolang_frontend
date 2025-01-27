@@ -23,7 +23,7 @@ const SearchPage = () => {
             return;
         }
         try {
-            const response = await fetch(`http://114.35.143.75:5000/api/search?keyword=${encodeURIComponent(keyword)}`, {
+            const response = await fetch(process.env.REACT_APP_API_URL +`/api/search?keyword=${encodeURIComponent(keyword)}`, {
               method: 'GET',});
       
             if (!response.ok) {
