@@ -10,7 +10,8 @@ const SearchPage = () => {
     const navigate = useNavigate(); 
     const [keyword, setKeyword] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
+    const [noaswer, setNoaswer] = useState(false); 
     const handlechange = (e) => {
         setKeyword(e.target.value);
     }
@@ -30,7 +31,12 @@ const SearchPage = () => {
               throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            setSearchResult(data);
+            if(data===null){
+                setSearchResult([]);
+                setNoaswer(true); 
+            }else{
+                setSearchResult(data);
+            }
             setLoading(false); 
             // Handle successful login (e.g., store token, redirect user)
           } catch (error) {
@@ -61,6 +67,8 @@ const SearchPage = () => {
                     </Spinner>
                     }
                 </Form>
+                {noaswer &&<h3 className="mb-4" style={{marginBottom: '20px'}}>無結果
+                </h3>}
             </Container> :
             <div>
                 <h1>搜尋結果"{keyword}"</h1>

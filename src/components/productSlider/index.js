@@ -27,19 +27,18 @@ function ProductCard(props) {
 
   useEffect(() => {
     console.log('ProductCard useEffect triggered');
-    console.log('slidess:', slidess);
     loadProducts(slidess);
-    const wishedProducts = slidess.filter((element) => element.isAddedToWishlist === true);
-    console.log(wishedProducts);
+    // const wishedProducts = slidess.filter((element) => element.isAddedToWishlist === true);
+    // console.log(wishedProducts);
   }, [loadProducts, slidess]);
 
   return (
     <div className="productSlider mb-5 mt-5">
       <Container>
-        <h5 className="text-left mb-4 ms-4">FEATURED PRODUCTS</h5>
+        {/* <h5 className="text-left mb-4 ms-4">FEATURED PRODUCTS</h5> */}
         <Carousel controls="false" responsive={ProductsResponsive}>
           {slidess.map((slide) => (
-            <ProductCardElement slidePro={slide} clickWish={handleToWish} />
+            <ProductCardElement slidePro={slide} />
           ))}
         </Carousel>
       </Container>

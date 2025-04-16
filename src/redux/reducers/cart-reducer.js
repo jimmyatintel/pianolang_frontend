@@ -1,5 +1,24 @@
 import * as actionTypes from "./cart-types";
-import allProducts from "../../services/watches";
+// Load order number from local storage
+const loadOrderNumberFromLocalStorage = () => {
+  try {
+    const orderNumber = localStorage.getItem("orderNumber");
+    return orderNumber ? parseInt(orderNumber, 10) : 0;
+  } catch (e) {
+    console.warn("Could not load order number from local storage", e);
+    return 0;
+  }
+};
+
+// Save order number to local storage
+const saveOrderNumberToLocalStorage = (orderNumber) => {
+  try {
+    localStorage.setItem("orderNumber", orderNumber.toString());
+  } catch (e) {
+    console.warn("Could not save order number to local storage", e);
+  }
+};
+
 
 // Load cart from local storage
 const loadCartFromLocalStorage = () => {
@@ -26,18 +45,13 @@ const saveCartToLocalStorage = (cart) => {
 };
 
 const INITIAL_STATE = {
-  allProducts: allProducts, // products without qty
   cart: loadCartFromLocalStorage(), // product with added qty
   currentItem: null,
+
 };
 
 const cartReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case actionTypes.LOAD_PRODUCTS:
-      return {
-        ...state,
-        allProducts: [...state.allProducts, action.payload.products],
-      };
     case actionTypes.ADD_TO_CART:
       const item = action.payload.item;
       
@@ -95,8 +109,31 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentItem: action.payload,
       };
+    case actionTypes.CLEAR_CART:
+      localStorage.removeItem("cart");
+      return {
+        ...state,
+        cart:
+          state.cart.length === 0
+            ? state.cart
+            : state.cart.filter((item) => item.qty === 0),
+      };
+    case actionTypes.SAVE_ORDER_NUMBER:
+      const orderNumber = action.payload;
+      saveOrderNumberToLocalStorage(orderNumber);
+      return {
+        ...state,
+        orderNumber: orderNumber,
+      };
+    case actionTypes.LOAD_ORDER_NUMBER:
+      const loadedOrderNumber = loadOrderNumberFromLocalStorage();
+      return {
+        ...state,
+        orderNumber: loadedOrderNumber,
+      };
     default:
       return state;
+    
   }
 };
 

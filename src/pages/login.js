@@ -38,7 +38,7 @@ function LoginPage(){
         console.log('Login button clicked');
         const user = { email:email, password:password };
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/login', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/api/login', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -51,11 +51,12 @@ function LoginPage(){
             }
       
             const data = await response.json();
-            console.log('Login successful:', data);
+            // console.log('Login successful:', data);
             dispatch(login(data.user,data.token));
             navigate('/');
             // Handle successful login (e.g., store token, redirect user)
           } catch (error) {
+            window.alert('登入失敗');
             console.error('There was a problem with the login request:', error);
             // Handle login error
           }
@@ -78,7 +79,7 @@ function LoginPage(){
                 <Form.Control type="password" placeholder="Password" className="mb-2" onChange={(e) => setPassword(e.target.value)}/>
               </Form.Group>
               <div className="text-center mt-3 mb-5">
-              <GoogleLogin
+              {/* <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
                 onFailure={handleGoogleLoginFailure}
                 buttonText="Login with Google"
@@ -92,18 +93,18 @@ function LoginPage(){
                 textButton="Login with Facebook"
                 cssClass="btnFacebook"
                 icon="fa-facebook"
-              />
+              /> */}
             </div>
             <div className="mb-4">
               <Row className="justify-content-end">
                 <Col xs="auto">
                   <Button variant="dark" type="regist" block onClick={handleRegist}>
-                    Register
+                    註冊
                   </Button>
                 </Col>
                 <Col xs="auto">
                   <Button variant="dark" type="submit" block onClick={handleLogin}>
-                    Submit
+                    登入
                   </Button>
                 </Col>
               </Row>

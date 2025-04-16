@@ -31,28 +31,9 @@ function Footer() {
         <Row>
           <Col>
             <div>
-              <h6 className="mb-4">SIGN UP FOR OUR NEWSLETTER</h6>
-              {/* <SubscribeCard
-                mailchimpURL={mailchimpURL}
-                outerCardStyle={OuterCardStyle}
-                subContainerStyle={SubContainerStyle}
-                subInputStyle={SubInputStyle}
-                subButtonStyle={SubButtonStyle}
-              /> */}
+              <h6 className="mb-4">訂閱最新琴譜</h6>
               <FooterLink href="/">
-                <Social className="me-3">
-                  <Facebook></Facebook>
-                </Social>
-              </FooterLink>
-              <FooterLink href="/">
-                <Social className="me-3">
-                  <Instagram></Instagram>
-                </Social>
-              </FooterLink>
-              <FooterLink href="/">
-                <Social className="me-3">
-                  <Twitter></Twitter>
-                </Social>
+                訂閱
               </FooterLink>
             </div>
           </Col>
@@ -61,9 +42,9 @@ function Footer() {
             <Column>
               <FooterLink href="/">首頁</FooterLink>
               <FooterLink href="/ranking">熱門排行</FooterLink>
-              <FooterLink href="/">歌曲分類</FooterLink>
-              <FooterLink href="/">求普專區</FooterLink>
-              <FooterLink href="/">Contact</FooterLink>
+              <FooterLink href="/search">歌曲搜尋</FooterLink>
+              <FooterLink href="/contact">求譜專區</FooterLink>
+              <FooterLink href="/contact">Contact</FooterLink>
             </Column>
             <Column>
               <FooterLink></FooterLink>
@@ -72,15 +53,15 @@ function Footer() {
             </Column>
           </Col>
           <Col>
-            <h6 className="mb-4">CONTACT US</h6>
+            <h6 className="mb-4">聯絡我們</h6>
             <Column>
-              <FooterLink>
+              {/* <FooterLink>
                 <GeoAltFill className="me-2"></GeoAltFill>
                 12345 Street name, CaFooterLinkfornia
-              </FooterLink>
+              </FooterLink> */}
               <FooterLink>
                 <EnvelopeFill className="me-2"></EnvelopeFill>
-                test@gmail.com
+                pianolang.service@gmail.com
               </FooterLink>
               {/* <FooterLink>
                 <PhoneFill className="me-2"></PhoneFill>

@@ -4,39 +4,39 @@ import latestPro from "../../services/latestProducts";
 import specialPro from "../../services/specialProducts";
 import bestPro from "../../services/bestProducts";
 import offersPro from "../../services/offersProducts";
+import { Spinner } from 'react-bootstrap';
 import "./style.css";
 import React from "react";
 
 function ProductTabs(props) {
-
+  const [isLoading, setIsLoading] = React.useState(true);
   const [key, setKey] = React.useState('month');
   const [slides, setSlides] = React.useState([]);
-  const [monthslides, setmonthslides] = React.useState(null);
-  const [dayslides, setdayslides] = React.useState(null);
-  const [weekslides, setweekslides] = React.useState(null);
+  const [monthslides, setmonthslides] = React.useState();
+  const [yearslides, setyearslides] = React.useState();
+  const [weekslides, setweekslides] = React.useState();
   React.useEffect(() => {
-    if(key === "week") {
+    if(key === "week" && weekslides) {
       setSlides(weekslides);
-    } else if(key === "day") {
-      setSlides(dayslides);
-    } else if(key === "month") {
-      setSlides(monthslides);
-    } else {
+    } else if(key === "year" && yearslides) {
+      setSlides(yearslides);
+    } else if(key === "month" && monthslides) {
       setSlides(monthslides);
     }
-  }, [key,weekslides,monthslides,dayslides]);
+  }, [key,weekslides,monthslides,yearslides]);
   React.useEffect(() => {
     const fetchMonth = async () => {
       const response = await fetch(process.env.REACT_APP_API_URL + `/api/gettopmonth`);
       const data = await response.json();
       console.log(data);
       setmonthslides(data);
+
     };
-    const fetchDay = async () => {
-      const response = await fetch(process.env.REACT_APP_API_URL+`/api/gettopday`);
+    const fetchyear = async () => {
+      const response = await fetch(process.env.REACT_APP_API_URL+`/api/gettopyear`);
       const data = await response.json();
       console.log(data);
-      setdayslides(data);
+      setyearslides(data);
     };
     const fetchWeek = async () => {
       const response = await fetch(process.env.REACT_APP_API_URL+`/api/gettopweek`);
@@ -46,10 +46,16 @@ function ProductTabs(props) {
     };
     fetchMonth();
     fetchWeek();
-    fetchDay();
+    fetchyear();
   }, []);
-  if (!monthslides || !weekslides || !dayslides) {
-    return <div>Loading...</div>;
+  if (!monthslides || !weekslides || !yearslides) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '40vh' }}>
+        <Spinner animation="border" role="status"  style={{marginLeft: '20px'}}>
+          <span className="sr-only"></span>
+        </Spinner>
+      </div>
+    );
   }
   return (
     <div className="productTabs">
@@ -70,7 +76,7 @@ function ProductTabs(props) {
         activeKey={key}
         onSelect={(k) => setKey(k)}
         id="controlled-tab-example"
-        className="mb-3 ms-4"
+        className="mb-3 ms-4 mt-5"
       >
          <Tab eventKey="month" title="每月排行">
         
@@ -78,7 +84,7 @@ function ProductTabs(props) {
         <Tab eventKey="week" title="每週排行">
           
         </Tab>
-        <Tab eventKey="day" title="每日排行">
+        <Tab eventKey="year" title="歷史排行">
           
         </Tab>
       </Tabs>

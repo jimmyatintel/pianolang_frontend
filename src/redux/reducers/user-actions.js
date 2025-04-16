@@ -8,7 +8,6 @@ export const login = (user,token) => {
   
 export const logout = () => {
     localStorage.removeItem('authToken');
-
     return {
       type: 'LOGOUT',
     };

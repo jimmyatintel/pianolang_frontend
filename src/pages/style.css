@@ -25,3 +25,14 @@ tbody, td, tfoot, th, thead, tr {
   .btnFacebook .fa-facebook {
     margin-right: 30%;
   }
+  .loading-cursor {
+    cursor: wait;
+  }
+.activestep{
+  opacity: 100%;
+
+}
+.inactivestep{
+  opacity: 40%;
+
+}

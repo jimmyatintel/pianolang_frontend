@@ -2,6 +2,7 @@ import React from "react";
 import MainSlider from "../components/MainSlider/index";
 import Types from "../components/classifications";
 import ProductTabs from "../components/productSliderTabs";
+import NewProductc from "../components/newrelease";
 import Brandslogo from "../components/brandsLogo/index";
 import ClientCarousel from "../components/clientCarousel/index";
 import ProductCard from "../components/productSlider";
@@ -11,8 +12,9 @@ function Rank(props) {
 
   return (
       <div>
-        <Types />
-        <ProductTabs />
+        {/* <Types /> */}
+        <NewProductc></NewProductc>
+        {/* <ProductTabs /> */}
         {/* <ProductCard slides={allProducts} /> */}
         {/* <ClientCarousel /> */}
       </div>

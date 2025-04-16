@@ -27,7 +27,7 @@ function ProductTrElement(props) {
     const input = document.querySelector('input');
     const subTotalll = inputQty * props.product.price;
     setsubTotal(subTotal + subTotalll);
-    let subTotShow = input.parentNode.parentNode.children[4];
+    let subTotShow = input.parentNode.parentNode.children[3];
     subTotShow.innerHTML = `${subTotalll}`;
     }, [inputQty, setsubTotal, props.product.price])
 
@@ -47,15 +47,6 @@ function ProductTrElement(props) {
 
   return (
     <tr key={props.product.id}>
-      <td>
-        <Link to={`/product/${props.product.id}`}>
-          <img
-            src={props.product.src}
-            alt="productImg"
-            onClick={() => LoadCurrentItem(props.product)}
-          />
-        </Link>
-      </td>
       <td onClick={() => LoadCurrentItem(props.product)}>
         <Link to={`/product/${props.product.id}`}>{props.product.song_name}</Link>
       </td>
@@ -69,6 +60,7 @@ function ProductTrElement(props) {
             min="1"
             max={props.product.maxQuantity}
             step="1"
+            style={{ maxWidth: "50px" }}
             // defaultValue="1"
             value={inputQty}
             onChange={onChangeQuantity}
@@ -89,7 +81,6 @@ function ProductTrElement(props) {
             size="sm"
             onClick={(e) => addToCart(e, props.product, props.product.id)}
           >
-            Add To Cart
           </Button>
         ) : (
           <Button
@@ -101,18 +92,7 @@ function ProductTrElement(props) {
             <Icon.Trash></Icon.Trash>
           </Button>
         )}
-        {!props.isWish ? (
-          ""
-        ) : (
-          <Button
-            variant="dark"
-            size="sm"
-            className="ms-2"
-            onClick={(e) => deleteFromWish(e, props.product)}
-          >
-            <Icon.Trash></Icon.Trash>
-          </Button>
-        )}
+        
       </td>
     </tr>
   );

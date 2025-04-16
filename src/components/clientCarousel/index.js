@@ -2,7 +2,7 @@ import Carousel from "react-bootstrap/Carousel";
 import { Container } from "react-bootstrap";
 import "./style.css";
 import "../MainSlider/style.css";
-import img1 from "../../images/t1.jpg";
+import img1 from "../../images/pichia06-5.jpg";
 import img2 from "../../images/t2.jpg";
 import img3 from "../../images/t3.jpg";
 
@@ -14,39 +14,36 @@ const ClientCarousel = () => {
           <Carousel.Item>
             <Carousel.Caption className="position-relative mb-4 mt-4">
               <img alt="" src={img1} className="img-fluid mb-3 border-50" />
-              <h5 className="text-dark">Janet Wilson</h5>
-              <span className="text-secondary">Web Developer</span>
+              <h5 className="text-dark">Pichia</h5>
+              <span className="text-secondary">資深專業製譜家</span>
               <p className="text-dark mt-3">
-                Rem ipsum doLoremRem ipsum doLorem ipsum ut labore et dolore ma
-                ipsum ut labore et dolore Rem ipsum doLorem ipsum ut labore et
-                dolore mamagna.Lorem ipsum doLorem ipsum dolor sit amet,
-                consectetur adipisicing.
+              前YAMAHA專任教師,多年專職編譜(五線/數字簡譜獨奏,伴奏譜)經驗.原廷廷鋼琴網專職編譜者.有上萬份琴譜在該網站.
+              日前廷廷鋼琴網停止下載,身為專業編譜者,原則上我會繼續製譜,會將琴譜移至此網站供網友下載.
+              若有任何問題,歡迎來信:E-mail:bj0805@gmail.com 感謝!
               </p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
             <Carousel.Caption className="position-relative mb-4 mt-4">
-              <img alt="" src={img2} className="img-fluid mb-3 border-50" />
-              <h5 className="text-dark">Janet Wilson</h5>
-              <span className="text-secondary">Web Designer</span>
+            <img alt="" src={img1} className="img-fluid mb-3 border-50" />
+              <h5 className="text-dark">Pichia</h5>
+              <span className="text-secondary">資深專業製譜家</span>
               <p className="text-dark mt-3">
-                Rem ipsum doLoremRem ipsum doLorem ipsum ut labore et dolore ma
-                ipsum ut labore et dolore Rem ipsum doLorem ipsum ut labore et
-                dolore mamagna.Lorem ipsum doLorem ipsum dolor sit amet,
-                consectetur adipisicing.
+              前YAMAHA專任教師,多年專職編譜(五線/數字簡譜獨奏,伴奏譜)經驗.原廷廷鋼琴網專職編譜者.有上萬份琴譜在該網站.
+              日前廷廷鋼琴網停止下載,身為專業編譜者,原則上我會繼續製譜,會將琴譜移至此網站供網友下載.
+              若有任何問題,歡迎來信:E-mail:bj0805@gmail.com 感謝!
               </p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
             <Carousel.Caption className="position-relative mb-4 mt-4">
-              <img alt="" src={img3} className="img-fluid mb-3 border-50" />
-              <h5 className="text-dark">Janet Wilson</h5>
-              <span className="text-secondary">Web Developer</span>
+            <img alt="" src={img1} className="img-fluid mb-3 border-50" />
+              <h5 className="text-dark">Pichia</h5>
+              <span className="text-secondary">資深專業製譜家</span>
               <p className="text-dark mt-3">
-                Rem ipsum doLoremRem ipsum doLorem ipsum ut labore et dolore ma
-                ipsum ut labore et dolore Rem ipsum doLorem ipsum ut labore et
-                dolore mamagna.Lorem ipsum doLorem ipsum dolor sit amet,
-                consectetur adipisicing.
+              前YAMAHA專任教師,多年專職編譜(五線/數字簡譜獨奏,伴奏譜)經驗.原廷廷鋼琴網專職編譜者.有上萬份琴譜在該網站.
+              日前廷廷鋼琴網停止下載,身為專業編譜者,原則上我會繼續製譜,會將琴譜移至此網站供網友下載.
+              若有任何問題,歡迎來信:E-mail:bj0805@gmail.com 感謝!
               </p>
             </Carousel.Caption>
           </Carousel.Item>

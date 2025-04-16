@@ -32,6 +32,12 @@ export const deleteFromCart = (event, itemID) => {
   };
 };
 
+export const clearCart = () => {
+  return {
+    type: actionTypes.CLEAR_CART,
+  };
+}
+
 export const adjustQuantity = (itemID, value) => {
   return {
     type: actionTypes.ADJUST_QUANTITY,
@@ -48,3 +54,16 @@ export const LoadCurrentItem = (item) => {
     payload: item,
   };
 };
+
+export const SaveOrderNumber = (orderNumber) => {
+  return {
+    type: actionTypes.SAVE_ORDER_NUMBER,
+    payload: orderNumber,
+  };
+}
+
+export const LoadOrderNumber = () => {
+  return {
+    type: actionTypes.LOAD_ORDER_NUMBER,
+  };
+}

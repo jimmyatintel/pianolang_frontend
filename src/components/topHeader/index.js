@@ -25,15 +25,17 @@ function TopHeader({ cart, user }) {
     });
     setWishCounter(wishCount);
   }, [cart, CartCounter, wish, WishCounter]);
-
+  const handleClick = (e) => {
+    window.alert("請先登入或註冊");
+  }
   return (
-    <section className="header-top bg-black text-white p-2 sticky-top">
+    <section className="header-top bg-black text-white p-2 sticky-top d-none d-md-block">
       <Container>
         <Row>
-          <Col className="text-start">
+          <Col className="text-start d-none d-md-block">
             <FooterLink className="me-5">
               <EnvelopeFill className="me-2"></EnvelopeFill>
-              test@gmail.com
+              pianolang.service@gmail.com
             </FooterLink>
             {/* <FooterLink>
               <PhoneFill className="me-2"></PhoneFill>
@@ -41,20 +43,31 @@ function TopHeader({ cart, user }) {
             </FooterLink> */}
           </Col>
           <Col className="text-end">
-            {/* <Link className="me-5 FooterLink text-white" to="/wishList">
+            {/* <Link className="me-5 FooterLink text-white d-none d-md-inline" to="/wishList">
               <FooterLink>
                 <HeartFill className="me-2"></HeartFill>
                 Wish List
                 <span className="ms-1">({WishCounter})</span>
               </FooterLink>
             </Link> */}
-            <Link className="me-5 FooterLink text-white" to="/shoppingCart">
+            {user ? (
+            <Link className="me-5 FooterLink text-white" to="/login" onClick={handleClick}>
               <FooterLink>
                 <BagCheckFill className="me-2"></BagCheckFill>
                 購物車
                 <span className="ms-1">({CartCounter})</span>
               </FooterLink>
             </Link>
+            ):(
+              <Link className="me-5 FooterLink text-white" to="/shoppingCart">
+              <FooterLink>
+                <BagCheckFill className="me-2"></BagCheckFill>
+                購物車
+                <span className="ms-1">({CartCounter})</span>
+              </FooterLink>
+            </Link>
+            )
+            }
 
             {user ? (
               <Link className="me-5 FooterLink text-white" to="/account">
@@ -67,7 +80,7 @@ function TopHeader({ cart, user }) {
               <Link className="me-5 FooterLink text-white" to="/login">
                 <FooterLink>
                   <PersonCircle className="me-2"></PersonCircle>
-                  Login
+                  登入/Login
                 </FooterLink>
               </Link>
             )}

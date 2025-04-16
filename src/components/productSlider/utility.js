@@ -10,46 +10,47 @@ import "./style.css";
 import "../MainSlider/style.css";
 import { connect } from "react-redux";
 import { addToCart, LoadCurrentItem } from "../../redux/reducers/cart-actios";
+import { useEffect, useState } from "react";
 import default_firstpage from "../../images/product1_firstpage.png";
+import nopic from "../../images/nopic.png";
+
 
 function ProductCardElement(props) {
   const ClickWish = props.clickWish;
   const addToCart = props.addToCart;
   const LoadCurrentItem = props.LoadCurrentItem;
-
+  const [coverlink, setcoverlink] = useState(default_firstpage);
+  const [currentStatus, setCurrentStatus] = useState(true);
+  // console.log(props.slidePro);
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
     }
     return text;
   };
+  useEffect(async() => {
+      // const response2 = await fetch(process.env.REACT_APP_API_URL+`/api/getsongstatus?id=${props.slidePro.id}`);
+      // const data2 = await response2.json();
+      // setCurrentStatus(data2);
+      setcoverlink("https://pianolangpic.s3.us-east-2.amazonaws.com/"+props.slidePro.pdf_name.slice(0, -4)+".png");
+      }, [props.slidePro.pdf_name]);
 
   return (
-    <div className="text-center" key={props.slidePro.id}>
+    <div className="text-center productElement" key={props.slidePro.id}>
       <Card className="border-0 position-relative">
         <Link to={`/product/${props.slidePro.id}`}>
+        <div className="image-wrapper">
           <Card.Img
             variant="top"
-            src={props.slidePro.front_cover==="None" ? default_firstpage : props.slidePro.src}
+            src={coverlink}
+            className="card-img-top"
             onClick={() => LoadCurrentItem(props.slidePro)}
+            onError={() => setcoverlink(nopic)} // Change to fallback image if src is invalid
+            alt={props.slidePro.song_name+"的封面"}
           />
+          </div>
         </Link>
         <ButtonGroup className="btnGroup d-flex justify-content-center mb-3 position-absolute">
-          <Button
-            variant="dark"
-            className="wish"
-            size="sm"
-            id={props.slidePro.id}
-            name={props.slidePro.name}
-            onClick={(e) => ClickWish(e, props.slidePro)}
-            disabled={props.slidePro.isAddedToWishlist}
-          >
-            <Icon.Heart
-              color={
-                props.slidePro.isAddedToWishlist === true ? "red" : "white"
-              }
-            ></Icon.Heart>
-          </Button>
           <Button
             variant="dark"
             size="sm"
@@ -57,15 +58,6 @@ function ProductCardElement(props) {
           >
             Add to Cart
           </Button>
-          <Link to={`/product/${props.slidePro.id}`}>
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={() => LoadCurrentItem(props.slidePro)}
-            >
-              <Icon.Eye></Icon.Eye>
-            </Button>
-          </Link>
         </ButtonGroup>
         <Card.Body>
           <Link to={`/product/${props.slidePro.id}`}>
@@ -87,9 +79,9 @@ function ProductCardElement(props) {
               size={24}
               color="gray"
               a11y={true}
-              edit={true}
+              edit={false}
               isHalf="true"
-              value={props.slidePro.rating}
+              value={5}
               activeColor="#ffd700"
             />
           </div>

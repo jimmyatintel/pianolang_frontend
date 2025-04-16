@@ -12,10 +12,10 @@ function Home(props) {
   return (
       <div>
         <MainSlider />
-        <Types />
+        {/* <Types /> */}
         <ProductTabs />
-        <Brandslogo />
-        <ProductCard slides={allProducts} />
+        {/* <Brandslogo /> */}
+        {/* <ProductCard slides={allProducts} /> */}
         <ClientCarousel />
       </div>
   );
