@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Container, Button, Form, Modal, Pagination, Spinner } from 'react-bootstrap';
+import { Table, Container, Button, Form, Modal, Pagination, Spinner, FormControl } from 'react-bootstrap';
 import { TruncateWords } from '../components/tool/tool';
 import { Link } from 'react-router-dom';
 import './style.css'; // Import the CSS file
@@ -10,13 +10,18 @@ function ManageSongs({user}) {
   const [songs, setSongs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalSongs, setTotalSongs] = useState(0);
+  const [reload, setReload] = useState(0);
   const [songsPerPage] = useState(30);
+  const [noaswer, setNoaswer] = useState(false); 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
+  const [keyword, setKeyword] = useState('');
+  const [searchword, setSearchword] = useState('');
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [loading3, setLoading3] = useState(false);
   const [loading4, setLoading4] = useState(false);
+  const [loadingoffsale, setLoadingoffsale] = useState(false);
   const [newSong, setNewSong] = useState({
     song_name: '',
     author: user.username,
@@ -46,7 +51,7 @@ function ManageSongs({user}) {
   useEffect(() => {
     const fetchPages = async () => {
       const authToken = localStorage.getItem('authToken'); // Assuming the authToken is stored in localStorage
-      const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/getlistpage', {
+      const response = await fetch(process.env.REACT_APP_API_URL + `/api/creator/getlistpage?keyword=${searchword}`, {
         headers: {
           'Authorization': `${authToken}`
         }
@@ -55,13 +60,17 @@ function ManageSongs({user}) {
       setTotalSongs(data.num);
     };
     fetchPages();
-  }, []);
-
+  }, [searchword]);
+  const handleSearchSubmit = async(e) => {
+    e.preventDefault();
+    console.log('Search button clicked');
+    setSearchword(keyword);
+}
   useEffect(() => {
     const fetchSongs = async () => {
       setLoading(true);
       const authToken = localStorage.getItem('authToken'); // Assuming the authToken is stored in localStorage
-      const response = await fetch(process.env.REACT_APP_API_URL + `/api/creator/getlist?page=${currentPage}&prepage=${songsPerPage}`, {
+      const response = await fetch(process.env.REACT_APP_API_URL + `/api/creator/getlist?page=${currentPage}&prepage=${songsPerPage}&keyword=${searchword}`, {
         headers: {
           'Authorization': `${authToken}`
         }
@@ -71,13 +80,12 @@ function ManageSongs({user}) {
       setLoading(false);
     };
     fetchSongs();
-  }, [currentPage]);
+  }, [currentPage,searchword,reload]);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal2 = (e) => {
     setShowModal2(true)
-    
     const fetchInfo = async (songId) => {
         setLoading2(true);
         const response = await fetch(process.env.REACT_APP_API_URL + '/api/getsonginfo?id=' + songId);
@@ -94,7 +102,7 @@ function ManageSongs({user}) {
             description: data.description,
             youtube_link: data.youtube_link,
             youtube_link2: data.youtube_link2,
-            pdf_file: data.pdf_name,
+            pdf_file_name: data.pdf_name,
           }));
         const response2 = await fetch(process.env.REACT_APP_API_URL + '/api/getsongstatus?id=' + songId);
         const data2 = await response2.json();
@@ -166,7 +174,11 @@ function ManageSongs({user}) {
             const mp3FileName = `${newSong.pdf_file.name.slice(0, -4)}.mp3`;
             const modifiedMp3File = new File([mp3File], mp3FileName, { type: mp3File.type });
             const formData2 = new FormData();
-            formData2.append('file', modifiedMp3File);
+            await new Promise((resolve) => {
+              formData2.append('file', modifiedMp3File);
+              resolve();
+            }
+            );
             const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
                 method: 'POST',
                 headers: {
@@ -184,7 +196,10 @@ function ManageSongs({user}) {
             const pdf = newSong.pdf_file;
             const modifiedpdf = new File([pdf], pdf.name, { type: pdf.type });
             const formData2 = new FormData();
-            formData2.append('file', modifiedpdf);
+            await new Promise((resolve) => {
+              formData2.append('file', modifiedpdf);
+              resolve();
+            });
             const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
                 method: 'POST',
                 headers: {
@@ -228,27 +243,39 @@ function ManageSongs({user}) {
   const handleSubmit2 = async (e) => {
     setLoading4(true);
     e.preventDefault();
+    console.log('Update button clicked');
+    if(currentStatus.pdf_status === false && currentSong.pdf_file === null){
+      window.alert('請上傳PDF檔案');
+      setLoading4(false);
+      return;
+    }
     const authToken = localStorage.getItem('authToken'); // Assuming the authToken is stored in localStorage
     const formData = {
-        song_id: currentSong.song_id,
+        id: currentSong.song_id,
         song_name: currentSong.song_name,
         author: currentSong.author,
         composer: currentSong.composer,
         lyricist: currentSong.lyricist,
         price: currentSong.price,
         description: currentSong.description,
-        mp3: currentSong.mp3_file ? `${currentSong.pdf_file.name.slice(0, -4)}.mp3` : null,
+        mp3: currentSong.mp3_file ? `${currentSong.pdf_file_name.slice(0, -4)}.mp3`: null,
         pdf_name: currentSong.pdf_file ? currentSong.pdf_file.name : null,
         youtube_link: currentSong.youtube_link,
         youtube_link2: currentSong.youtube_link2,
       };
     try{
     if (currentSong.mp3_file) {
+        console.log('MP3 file exists');
+        console.log(currentSong.mp3_file);
         const mp3File = currentSong.mp3_file;
-        const mp3FileName = `${currentSong.pdf_file.name.slice(0, -4)}.mp3`;
+        const mp3FileName = `${currentSong.pdf_file_name.slice(0, -4)}.mp3`;
         const modifiedMp3File = new File([mp3File], mp3FileName, { type: mp3File.type });
         const formData2 = new FormData();
-        formData2.append('mp3_file', modifiedMp3File);
+        await new Promise((resolve) => {
+          formData2.append('file', modifiedMp3File);
+          resolve();
+        }
+        );
         const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
             method: 'POST',
             headers: {
@@ -262,11 +289,17 @@ function ManageSongs({user}) {
             return;
         } 
     }
-    if (currentSong.pdf_file) {
+    if( currentSong.pdf_file) {
+        console.log('PDF file exists');
+        console.log(currentSong.pdf_file);
         const pdf = currentSong.pdf_file;
         const modifiedpdf = new File([pdf], pdf.name, { type: pdf.type });
         const formData2 = new FormData();
-        formData2.append('pdf_file', modifiedpdf);
+        await new Promise((resolve) => {
+          formData2.append('file', modifiedpdf);
+          resolve();
+        }
+        );
         const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
             method: 'POST',
             headers: {
@@ -290,7 +323,8 @@ function ManageSongs({user}) {
     });
     if (response.ok) {
         window.alert('上傳成功');
-      handleCloseModal();
+        setReload(reload + 1);
+        handleCloseModal();
     }else if (response.status === 400) {
         const errorData = await response.json();
         console.log('Upload failed with 400 error:', errorData);
@@ -299,7 +333,7 @@ function ManageSongs({user}) {
     console.log('Upload failed with status:', response.status);
     window.alert('上傳失敗: ' + response.statusText);
     }
-}catch (error) {
+  }catch (error) {
     console.error('Error during submission:', error);
     window.alert('上傳失敗: ' + error.message);
     }
@@ -307,6 +341,21 @@ function ManageSongs({user}) {
     setLoading4(false);
     }
   };
+  const handleoffsale = async () => {
+    setLoadingoffsale(true);
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/offsale?id=' + currentSong.song_id);
+    if(response.ok){
+      window.alert('下架成功');
+      handleCloseModal2();
+      setLoadingoffsale(false);
+    }else{
+      window.alert('下架失敗，請聯絡管理員');
+      setLoadingoffsale(false);
+    }
+  }
+  const handlechange = (e) => {
+    setKeyword(e.target.value);
+}
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -315,13 +364,28 @@ function ManageSongs({user}) {
   return (
     <Container className={`my-3 ${loading ? 'loading-cursor' : ''}`} style={{ minHeight: '80vh' }}>
       <h1>管理歌曲</h1>
-      <Button variant="primary" onClick={handleShowModal}>
+      <Form className="d-flex align-items-center" style={{width: '100%'}}>
+      <Button variant="primary" onClick={handleShowModal} style={{marginRight: '5vw'}}>
         上傳新歌曲
       </Button>
+        <FormControl 
+            type="text" 
+            placeholder="歌名搜尋" 
+            onChange={handlechange} 
+            value={keyword}
+            className="mr-sm-2" 
+            style={{width: '20vw', marginRight: '2vw' }} 
+        />
+        <Button variant="outline-success" type="submit"  onClick={handleSearchSubmit}>搜尋</Button>
+        {
+          searchword !== '' ?
+          <Button variant="outline-danger" type="submit" style={{marginLeft: '2vw'}} onClick={() => {setSearchword(''); setKeyword('')}}>清除</Button>
+          : ''
+        }
+      </Form>
       {loading ? (
         <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
           <Spinner animation="border" role="status">
-            
           </Spinner>
         </div>
       ) : (
@@ -502,7 +566,7 @@ function ManageSongs({user}) {
           </Spinner>
         </div>
       ) : (
-          <Form onSubmit={handleSubmit2}>
+          <Form >
             <Form.Group controlId="songName">
               <Form.Label>歌曲名稱 ID: {currentSong.song_id}</Form.Label>
               <Form.Control
@@ -600,7 +664,7 @@ function ManageSongs({user}) {
                 onChange={handleFileChange2}
               />
               {
-                currentStatus.pdf_status === true ? <Form.Text className="text-danger">{currentSong.pdf_file}</Form.Text> : ''
+                currentStatus.pdf_status === true ? <Form.Text className="text-danger">{currentSong.pdf_file_name}</Form.Text> : ''
               }
             </Form.Group>
             <Form.Group controlId="pdfFile">
@@ -611,11 +675,11 @@ function ManageSongs({user}) {
             </Form.Group>
             <Form.Group><Form.Label>2. 上傳新的檔案會覆蓋掉舊的</Form.Label></Form.Group>
             <Form.Group><Form.Label>3. 如果需要反應問題請回報給管理員上面顯示的ＩＤ</Form.Label></Form.Group>
-            <Button variant="primary" type="submit" className='mt-3'>
+            <Button variant="primary" type="submit" className='mt-3 mr-3' onClick={handleSubmit2}>
             {loading4 ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : '送出'}
             </Button>
-            <Button variant="primary" type="submit" className='mt-3' enabled={false}>
-                下架
+            <Button variant="primary" type="submit" className='mt-3' onClick={handleoffsale}>
+            {loadingoffsale ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : '下架'}
             </Button>
           </Form>
             )}

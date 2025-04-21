@@ -169,7 +169,7 @@ const AccountModify = ({ user}) => {
                         </Button>
                         {formData.creator===true && 
                             <Button variant="dark" type="submit" className='ml-4' style={{marginRight:"20px",marginBottom:"20px"}} href='/manage'>
-                                影片管理
+                                歌曲管理
                             </Button>
                         }
                     </Form>

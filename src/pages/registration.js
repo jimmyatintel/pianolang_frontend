@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import "./style.css"
 const Registration = ({ user}) => {
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         username: '',

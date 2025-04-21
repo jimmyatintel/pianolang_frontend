@@ -98,13 +98,13 @@ function LoginPage(){
             <div className="mb-4">
               <Row className="justify-content-end">
                 <Col xs="auto">
-                  <Button variant="dark" type="regist" block onClick={handleRegist}>
-                    註冊
+                  <Button variant="dark" type="submit" block onClick={handleLogin}>
+                    登入
                   </Button>
                 </Col>
                 <Col xs="auto">
-                  <Button variant="dark" type="submit" block onClick={handleLogin}>
-                    登入
+                  <Button variant="dark" type="regist" block onClick={handleRegist}>
+                    註冊
                   </Button>
                 </Col>
               </Row>

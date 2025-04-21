@@ -51,7 +51,7 @@ function TopHeader({ cart, user }) {
               </FooterLink>
             </Link> */}
             {user ? (
-            <Link className="me-5 FooterLink text-white" to="/login" onClick={handleClick}>
+            <Link className="me-5 FooterLink text-white" to="/shoppingCart" >
               <FooterLink>
                 <BagCheckFill className="me-2"></BagCheckFill>
                 購物車
@@ -59,7 +59,7 @@ function TopHeader({ cart, user }) {
               </FooterLink>
             </Link>
             ):(
-              <Link className="me-5 FooterLink text-white" to="/shoppingCart">
+              <Link className="me-5 FooterLink text-white" to="/login" onClick={handleClick}>
               <FooterLink>
                 <BagCheckFill className="me-2"></BagCheckFill>
                 購物車
