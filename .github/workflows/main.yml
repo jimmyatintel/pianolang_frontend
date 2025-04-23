@@ -15,4 +15,4 @@ jobs:
 
     - name: Pull latest code on server
       run: |
-        ssh root@ssh.pianolang.com "cd /root/pianolang_frontend && git pull origin master && NODE_OPTIONS=--openssl-legacy-provider npm run build && cp -r build/* /pianolang/"
+        ssh -i /home/jimmy/.ssh/id_rsa_github root@ssh.pianolang.com "cd /root/pianolang_frontend && git pull origin master && NODE_OPTIONS=--openssl-legacy-provider npm run build && cp -r build/* /pianolang/"
