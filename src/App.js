@@ -18,6 +18,7 @@ import OrderList from "./pages/order_list";
 import ManageSongs from "./pages/manage";
 import Contact from "./pages/contact";
 import OrderComplete from "./pages/ordercomplete";
+import Dashboard from "./pages/dashboard"
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/reducers/user-actions";
 
@@ -29,14 +30,16 @@ function App(props) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user); // adjust based on your reducer structure
   const timerRef = useRef(null);
-
   // Reset idle timer
   const resetTimer = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      if (user?.isLoggedIn) {
+      if (user) {
         dispatch(logout());
-        alert("You have been logged out due to inactivity.");
+        if (window.confirm("You have been logged out due to inactivity. Click OK to return to the main page.")) {
+          window.location.href = "/";
+        }
+
       }
     }, IDLE_TIMEOUT);
   };
@@ -51,7 +54,6 @@ function App(props) {
       activityEvents.forEach(event => window.removeEventListener(event, resetTimer));
     };
   }, [user]);
-
   return (
     <Router>
       <div id="App">
@@ -67,9 +69,10 @@ function App(props) {
           <Route path="/registration" element={<Registration />}></Route>
           <Route path="/search" element={<SearchPage />}></Route>
           <Route path="/orderlist" element={<OrderList />}></Route>
-          <Route path="/manage" element={<ManageSongs />}></Route>
+          <Route path="/manage" element={<ManageSongs></ManageSongs>}></Route>
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/ordercomplete/:id" element={<OrderComplete />}></Route>
+          <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="*" element={<Home />}></Route>
         </Routes>
         <Footer />
