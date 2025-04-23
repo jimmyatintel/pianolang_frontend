@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Container, Button, Form, Modal, Pagination, Spinner, FormControl } from 'react-bootstrap';
+import { Table, Container, Button, Form, Modal, Pagination, Spinner, FormControl, Col, Row } from 'react-bootstrap';
 import { TruncateWords } from '../components/tool/tool';
 import { Link } from 'react-router-dom';
 import './style.css'; // Import the CSS file
@@ -457,12 +457,14 @@ function ManageSongs({ user }) {
         </>
       )}
 
-      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal show={showModal} onHide={handleCloseModal} size="lg" style={{ margin: 'auto' }}>
         <Modal.Header closeButton>
           <Modal.Title>上傳新歌曲</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
+          <Row>
+          <Col md="6">
             <Form.Group controlId="songName">
               <Form.Label>歌曲名稱</Form.Label>
               <Form.Control
@@ -478,7 +480,7 @@ function ManageSongs({ user }) {
               <Form.Control
                 type="text"
                 name="author"
-                value={user? user.username : ''}
+                value={user ? user.username : ''}
                 onChange={handleInputChange}
                 required
                 readOnly
@@ -523,6 +525,8 @@ function ManageSongs({ user }) {
                 onChange={handleInputChange}
               />
             </Form.Group>
+            </Col>
+            <Col md="6">
             <Form.Group controlId="price">
               <Form.Label>價格</Form.Label>
               <Form.Control
@@ -531,17 +535,6 @@ function ManageSongs({ user }) {
                 value={newSong.price}
                 onChange={handleInputChange}
                 required
-              />
-            </Form.Group>
-            <Form.Group controlId="description">
-              <Form.Label>描述</Form.Label>
-              <Form.Control
-                as="textarea"
-                name="description"
-                value={newSong.description}
-                onChange={handleInputChange}
-                required
-                style={{ minHeight: '150px' }}
               />
             </Form.Group>
             <Form.Group controlId="mp3File">
@@ -561,6 +554,19 @@ function ManageSongs({ user }) {
                 required
               />
             </Form.Group>
+            </Col>
+            </Row>
+            <Form.Group controlId="description">
+              <Form.Label>描述</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="description"
+                value={newSong.description}
+                onChange={handleInputChange}
+                required
+                style={{ minHeight: '150px' }}
+              />
+            </Form.Group>
             <Form.Group>
               <Form.Label>1. 歌曲名稱和檔案名稱請勿和以前的重複</Form.Label>
             </Form.Group>
@@ -573,7 +579,7 @@ function ManageSongs({ user }) {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal2} onHide={handleCloseModal2}>
+      <Modal show={showModal2} onHide={handleCloseModal2} size="lg" style={{ margin: 'auto' }}>
         <Modal.Header closeButton >
           <Modal.Title>調整歌曲</Modal.Title>
         </Modal.Header>
@@ -581,11 +587,12 @@ function ManageSongs({ user }) {
           {loading2 ? (
             <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
               <Spinner animation="border" role="status">
-
               </Spinner>
             </div>
           ) : (
             <Form >
+              <Row>
+              <Col md="6">
               <Form.Group controlId="songName">
                 <Form.Label>歌曲名稱 ID: {currentSong.song_id}</Form.Label>
                 <Form.Control
@@ -645,6 +652,8 @@ function ManageSongs({ user }) {
                   onChange={handleInputChange2}
                 />
               </Form.Group>
+              </Col>
+              <Col md="6">
               <Form.Group controlId="price">
                 <Form.Label>價格</Form.Label>
                 <Form.Control
@@ -655,17 +664,6 @@ function ManageSongs({ user }) {
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="description">
-                <Form.Label>描述</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  name="description"
-                  value={currentSong.description}
-                  onChange={handleInputChange2}
-                  required
-                  style={{ minHeight: '150px' }}
-                />
-              </Form.Group>
               <Form.Group controlId="mp3File">
                 <Form.Label>試聽 MP3</Form.Label>
                 <Form.Control
@@ -674,6 +672,9 @@ function ManageSongs({ user }) {
                   onChange={handleFileChange2}
                 />
               </Form.Group>
+              {
+                currentStatus.mp3_status === true ? <Form.Text className="text-danger">{ `${currentSong.pdf_file_name.slice(0, -4)}.mp3`}</Form.Text> : ''
+              }
               <Form.Group controlId="pdfFile">
                 <Form.Label>PDF檔案 </Form.Label>
                 <Form.Control
@@ -685,8 +686,22 @@ function ManageSongs({ user }) {
                 {
                   currentStatus.pdf_status === true ? <Form.Text className="text-danger">{currentSong.pdf_file_name}</Form.Text> : ''
                 }
+
               </Form.Group>
-              <Form.Group controlId="pdfFile">
+              </Col>
+              </Row>
+              <Form.Group controlId="description">
+                <Form.Label>描述</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="description"
+                  value={currentSong.description}
+                  onChange={handleInputChange2}
+                  required
+                  style={{ minHeight: '150px' }}
+                />
+              </Form.Group>
+              <Form.Group controlId="notice">
                 <Form.Label><h4>注意事項：</h4></Form.Label>
               </Form.Group>
               <Form.Group>
@@ -697,7 +712,7 @@ function ManageSongs({ user }) {
               <Button variant="primary" type="submit" className='mt-3 mr-3' onClick={handleSubmit2}>
                 {loading4 ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : '送出'}
               </Button>
-              <Button variant="primary" type="submit" className='mt-3' onClick={handleoffsale}>
+              <Button variant="primary" type="cancel" className='mt-3 ml-4' onClick={handleoffsale}>
                 {loadingoffsale ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : '下架'}
               </Button>
             </Form>

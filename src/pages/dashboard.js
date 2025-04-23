@@ -14,6 +14,7 @@ const Dashboard = ({ user }) => {
     const [pendingIncome, setPendingIncome] = React.useState(100000);
     const [pendingWithdrawals, setPendingWithdrawals] = React.useState(999);
     const [totalSongs, setTotalSongs] = React.useState(5000);
+    const [loadinginfo, setLoadinginfo] = React.useState(true);
     const description = ["此處所列為歷史所有收入，包含已提領和未提領之款項。（僅包含個人分潤） ", "此處所列為處理中之款項，因銀行作業時間尚未入帳暫時無法提領。作業時間大約１～３天", "此處所列為可提領之款項，如需提領請至提領頁面進行操作。（提領金額需大於1000元）"];
     const currentIncome = 1200; // Example income, replace with dynamic data
 
@@ -41,10 +42,11 @@ const Dashboard = ({ user }) => {
                     navigate('/login');
                 } else {
                     const data = await response.json();
-                    setTotalIncome(data.History_amount);
-                    setPendingIncome(data.Pending_amount);
-                    setPendingWithdrawals(data.Withdraw);
-                    setTotalSongs(data.History_song);
+                    setTotalIncome(data.history_amount);
+                    setPendingIncome(data.pending_amount);
+                    setPendingWithdrawals(data.withdraw);
+                    setTotalSongs(data.history_song);
+                    setLoadinginfo(false);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -61,10 +63,11 @@ const Dashboard = ({ user }) => {
                 {['歷史總計所有收入', '待處理款項', '可提領金額', '已上傳曲目'].map((title, index) => (
                     <Card key={index} className="m-3" style={{ width: '18rem', height: '10rem' }}>
                         <Card.Body>
-                            {index === 0 ?<Card.Title className="text-success">{totalIncome}</Card.Title> : null}
-                            {index === 1 ?<Card.Title className="text-success">{pendingIncome}</Card.Title> : null}
-                            {index === 2 ?pendingWithdrawals > 1000?<Card.Title className="text-success">{pendingWithdrawals}</Card.Title>:<Card.Title className="text-warning">{pendingWithdrawals}</Card.Title> : null}
-                            {index === 3 ?<Card.Title className="text-info">{totalSongs}</Card.Title> : null}
+                            {loadinginfo ? <Card.Title className="text-success">Loading...</Card.Title> : null}
+                            {index === 0 && loadinginfo === false ?<Card.Title className="text-success">{totalIncome}</Card.Title> : null}
+                            {index === 1 && loadinginfo === false ?<Card.Title className="text-success">{pendingIncome}</Card.Title> : null}
+                            {index === 2 && loadinginfo === false ?pendingWithdrawals > 1000?<Card.Title className="text-success">{pendingWithdrawals}</Card.Title>:<Card.Title className="text-warning">{pendingWithdrawals}</Card.Title> : null}
+                            {index === 3 && loadinginfo === false ?<Card.Title className="text-info">{totalSongs}</Card.Title> : null}
                             <Card.Subtitle className="mb-2 text-muted">{title}</Card.Subtitle>
                             <Card.Text>
                                 {description[index]}
