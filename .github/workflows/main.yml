@@ -1,0 +1,25 @@
+name: Deploy to Server on Push
+
+on:
+  push:
+    branches:
+      - deploy  # or your deployment branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ssh.pianolang.com >> ~/.ssh/known_hosts
+
+    - name: Pull latest code on server
+      run: |
+        ssh root@ssh.pianolang.com "cd /root/pianolang_frontend && git pull origin master && NODE_OPTIONS=--openssl-legacy-provider npm run build && cp -r build/* /pianolang/"
