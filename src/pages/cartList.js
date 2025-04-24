@@ -115,18 +115,28 @@ function CartListPage(props) {
       });
 
       const orderData = await response.json();
-      const res = await fetch(process.env.REACT_APP_API_URL+"/api/order/create-ecpay-order", {  
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          order_id: orderData.order_id,
-          amount: totalPrice,
-          itemName: "琴譜",
-        }),
-      });
-  
+      if (response.status === 401) {
+        alert("請重新登入");
+        dispatch(logout());
+        navigate('/login');
+        return;
+      }
+      if (response.ok && totalPrice === 0) {
+        navigate("/ordercomplete/"+orderData.order_id);
+      }
+      if (totalPrice !== 0) {
+        const res = await fetch(process.env.REACT_APP_API_URL+"/api/order/create-ecpay-order", {  
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            order_id: orderData.order_id,
+            amount: totalPrice,
+            itemName: "琴譜",
+          }),
+        });
+      }
       const html = await res.text();
       setLoading(false);
       // Open the HTML form in a new tab

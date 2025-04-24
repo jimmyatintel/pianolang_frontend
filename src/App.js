@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/reducers/user-actions";
 
 // ⏰ Idle time (in ms)
-const IDLE_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+const IDLE_TIMEOUT = 60 * 60 * 1000; // 30 minutes
 
 function App(props) {
   const [quantity, setQuantity] = useState(0);
@@ -34,9 +34,9 @@ function App(props) {
   const resetTimer = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      if (user) {
+      if (user!==null) {
         dispatch(logout());
-        if (window.confirm("You have been logged out due to inactivity. Click OK to return to the main page.")) {
+        if (window.confirm("您已經閒置了一小時了，出於安全理由系統已將您登出。請重新登入")) {
           window.location.href = "/";
         }
 
