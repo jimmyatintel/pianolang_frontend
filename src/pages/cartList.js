@@ -136,7 +136,7 @@ function CartListPage(props) {
             itemName: "琴譜",
           }),
         });
-      }
+      
       const html = await res.text();
       setLoading(false);
       // Open the HTML form in a new tab
@@ -145,6 +145,7 @@ function CartListPage(props) {
         newWindow.document.write(html);
         newWindow.document.close();
       }
+    }
     } catch (err) {
       console.error("Failed to create ECPay order:", err);
     }
