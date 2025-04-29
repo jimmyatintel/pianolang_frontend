@@ -1,8 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
-import { Col, Row, Spinner } from 'react-bootstrap';
+import { Col, Row, Spinner, Form, Button, } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { logout } from "../redux/reducers/user-actions";
 import { useDispatch } from 'react-redux';
@@ -25,6 +26,15 @@ const Withdraw = ({ user }) => {
     const handleSongManagement = () => {
         navigate('/manage');
     };
+    const [formData, setFormData] = useState({
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+            birth: user.birth,
+            creator: user.creator,
+            password: '',
+            password2: '',
+        });
 
     const handleSalesStatus = () => {
         navigate('/creatororder');
@@ -97,60 +107,12 @@ const Withdraw = ({ user }) => {
                     navigate('/login');
                 } else {
                     const data = await response.json();
-                    setTotalIncome(data.history_amount);
-                    setPendingIncome(data.pending_amount);
-                    setPendingWithdrawals(data.withdraw);
-                    setTotalSongs(data.history_song);
-                    setLoadinginfo(false);
+                    
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-        const fetchBestSelling = async () => {
-            try {
-                const authToken = localStorage.getItem('authToken');
-                const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/bestsellingitems', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `${authToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (response.status === 401) {
-                    return
-                } else if (response.status === 200) {
-                    const data = await response.json();
-                    setBestSelling(data);
-                    setLoadingBestSelling(false);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        const fetchBestSelling30 = async () => {
-            try {
-                const authToken = localStorage.getItem('authToken');
-                const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/bestsellingitems30days', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `${authToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (response.status === 401) {
-                    return
-                } else if (response.status === 200){
-                    const data = await response.json();
-                    setRecentSales(data);
-                    setloadingBestSelling30(false);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchBestSelling();
-        fetchBestSelling30();
         fetchData();
     }
     , []);
@@ -190,12 +152,12 @@ const Withdraw = ({ user }) => {
                 </Form.Group>
                 <Form.Group controlId="formEmail" className='my-3'>
                     <Form.Label>銀行代碼</Form.Label>
-                    <select class="form-select" aria-label="Default select example">
-  <option selected>Open this select menu</option>
-  <option value="1">One</option>
-  <option value="2">Two</option>
-  <option value="3">Three</option>
-</select>
+                    <Form.Select aria-label="Default select example">
+                        <option>銀行代碼</option>
+                        {bankcode.map((item) => (
+                            <option key={item.code} value={item.code}>{item.name}</option>
+                        ))}
+                    </Form.Select>
                 </Form.Group>
                 <Form.Group controlId="formPassword" className='my-3'>
                     <Form.Label>銀行帳號</Form.Label>
