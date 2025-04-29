@@ -364,6 +364,9 @@ function ManageSongs({ user }) {
   };
   const handleoffsale = async () => {
     const authToken = localStorage.getItem('authToken');
+    if (!window.confirm('確定要下架這首歌曲嗎？')) {
+      return;
+    }
     setLoadingoffsale(true);
     const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/offsale?id=' + currentSong.song_id, {
       method: 'GET',
