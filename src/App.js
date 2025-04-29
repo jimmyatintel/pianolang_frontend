@@ -18,7 +18,9 @@ import OrderList from "./pages/order_list";
 import ManageSongs from "./pages/manage";
 import Contact from "./pages/contact";
 import OrderComplete from "./pages/ordercomplete";
+import CreatorOrder from "./pages/creatororder";
 import Dashboard from "./pages/dashboard"
+import Withdraw from "./pages/withdraw";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/reducers/user-actions";
 
@@ -70,9 +72,11 @@ function App(props) {
           <Route path="/search" element={<SearchPage />}></Route>
           <Route path="/orderlist" element={<OrderList />}></Route>
           <Route path="/manage" element={<ManageSongs></ManageSongs>}></Route>
+          <Route path="/creatororder" element={<CreatorOrder></CreatorOrder>}></Route>
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/ordercomplete/:id" element={<OrderComplete />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/withdraw" element={<Withdraw />}></Route>
           <Route path="*" element={<Home />}></Route>
         </Routes>
         <Footer />

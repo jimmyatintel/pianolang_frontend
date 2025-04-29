@@ -49,56 +49,7 @@ function CartListPage(props) {
     setOrder_info(orderinfo);
     console.log(user);
   }, [cart, totalPrice, setTotalPrice, discount, setdiscount]);
-  const handleCheckout = () => {
-    if(user===null){
-      alert("請先登入或註冊");
-      window.location.href = "/login";
-    }
-    else{
-      setLoading(true);
-      setDeliver_mail(user.email)
-      const sendorder = async () => {
-        const authToken = localStorage.getItem("authToken");
-        const orderinfo = {
-          "user_id": user.user_id,
-          "time": new Date().toISOString().slice(0, 19).replace('T', ' '),
-          "items": [],
-          "amount":[],
-          "total_price": totalPrice,
-        }
-        cart.forEach((item) => {
-          orderinfo.items.push(item.id);
-          orderinfo.amount.push(item.qty);
-        });
-        const response = await fetch(process.env.REACT_APP_API_URL + "/api/order/neworder", {
-          method: "POST",
-          headers: {
-            Authorization: `${authToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(orderinfo),
-        });
-        if(response.status === 401){
-          alert("請重新登入");
-          dispatch(logout());
-          navigate('/login');
-          return
-        }
-        if (!response.ok) {
-          alert("訂單建立失敗");
-        }else{
-          alert("訂單建立成功！請至信箱確認訂單內容與付款方式");
-          window.location.href = "/";
-          cart = [];
-        }
-      }
-      try{
-        sendorder();
-      }finally{
-        setLoading(false);
-      }
-    }
-  };
+
   const handleCheckout2 = async () => {
     setLoading(true);
     try {
@@ -129,6 +80,7 @@ function CartListPage(props) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `${authToken}`,
           },
           body: JSON.stringify({
             order_id: orderData.order_id,

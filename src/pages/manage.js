@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {logout} from "../redux/reducers/user-actions";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 function ManageSongs({ user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -382,6 +383,7 @@ function ManageSongs({ user }) {
 
   return (
     <Container className={`my-3 ${loading ? 'loading-cursor' : ''}`} style={{ minHeight: '80vh' }}>
+      <Button variant="outline-secondary" onClick={() => {navigate('/dashboard')}}><i class="bi bi-arrow-return-left"></i>返回管理介面</Button>
       <h1>管理歌曲</h1>
       <Form className="d-flex align-items-center" style={{ width: '100%' }}>
         <Button variant="primary" onClick={handleShowModal} style={{ marginRight: '5vw' }}>

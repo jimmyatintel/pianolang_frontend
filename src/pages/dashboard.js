@@ -27,7 +27,7 @@ const Dashboard = ({ user }) => {
     };
 
     const handleSalesStatus = () => {
-        navigate('/sales-status');
+        navigate('/creatororder');
     };
     React.useEffect(() => {
         const fetchData = async () => {
