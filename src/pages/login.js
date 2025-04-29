@@ -14,6 +14,7 @@ function LoginPage(){
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const handleGoogleLoginSuccess = (response) => {
         console.log('Google login success:', response);
         // Handle login success (e.g., send token to your server)
@@ -35,6 +36,7 @@ function LoginPage(){
     }
     const handleLogin = async(e) => {
         e.preventDefault();
+        setLoading(true);
         console.log('Login button clicked');
         const user = { email:email, password:password };
         try {
@@ -45,19 +47,19 @@ function LoginPage(){
               },
               body: JSON.stringify(user),
             });
-      
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
-      
             const data = await response.json();
             // console.log('Login successful:', data);
             dispatch(login(data.user,data.token));
+
             navigate('/');
             // Handle successful login (e.g., store token, redirect user)
           } catch (error) {
             window.alert('登入失敗');
             console.error('There was a problem with the login request:', error);
+            setLoading(false);
             // Handle login error
           }
         // Handle login logic
@@ -98,8 +100,8 @@ function LoginPage(){
             <div className="mb-4">
               <Row className="justify-content-end">
                 <Col xs="auto">
-                  <Button variant="dark" type="submit" block onClick={handleLogin}>
-                    登入
+                  <Button variant="dark" type="submit" block onClick={handleLogin} disabled={loading}>
+                    {loading ? 'Loading...' : '登入'}
                   </Button>
                 </Col>
                 <Col xs="auto">

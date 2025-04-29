@@ -29,6 +29,9 @@ const Dashboard = ({ user }) => {
     const handleSalesStatus = () => {
         navigate('/creatororder');
     };
+    const handleWithdraw = () => {
+        navigate('/withdraw');
+    };
     React.useEffect(() => {
         const fetchData = async () => {
             try {
@@ -188,7 +191,7 @@ const Dashboard = ({ user }) => {
                     歌曲管理
                 </button>
                 <button
-                    onClick={handleSalesStatus}
+                    onClick={handleWithdraw}
                     className="btn btn-primary me-2"
                 >
                     提領款項

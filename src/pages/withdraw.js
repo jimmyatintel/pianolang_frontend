@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
-import { Col, Row, Spinner, Form, Button, } from 'react-bootstrap';
+import { Col, Row, Spinner, Form, Button, Text } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { logout } from "../redux/reducers/user-actions";
 import { useDispatch } from 'react-redux';
@@ -23,168 +23,6 @@ const Withdraw = ({ user }) => {
     const [bankaccount, setBankaccount] = React.useState([]);
     const description = ["此處所列為歷史所有收入，包含已提領和未提領之款項。（僅包含個人分潤） ", "此處所列為處理中之款項，因銀行及人工作業時間尚未入帳。作業時間大約１～３天", "此處所列為可提領之款項，如需提領請至提領頁面進行操作。（提領金額需大於1000元）"];
     const currentIncome = 1200; // Example income, replace with dynamic data
-    const handleSongManagement = () => {
-        navigate('/manage');
-    };
-    const [formData, setFormData] = useState({
-            username: user.username,
-            email: user.email,
-            phone: user.phone,
-            birth: user.birth,
-            creator: user.creator,
-            password: '',
-            password2: '',
-        });
-
-    const handleSalesStatus = () => {
-        navigate('/creatororder');
-    };
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        const authToken = localStorage.getItem('authToken');
-        const user_info = {
-            user_id: user.user_id,
-            username: formData.username,
-            email: formData.email,
-            phone: formData.phone,
-            birth: formData.birth,
-        };
-        const response = await fetch(process.env.REACT_APP_API_URL + '/api/user/modifyuser', {
-            method: 'POST',
-            headers: {
-                'Authorization': `${authToken}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user_info),
-            });
-            if(response.status === 401){
-            alert("請重新登入");
-            dispatch(logout());
-            navigate('/login');
-            return
-            }
-        if (!response.ok) {
-            window.alert('修改失敗');
-            return
-        }
-        if (formData.password !== ''){
-            const response2 = await fetch(process.env.REACT_APP_API_URL + '/api/user/modifypass', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `${authToken}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({user_id:user.user_id,password:formData.password}),
-                });
-            if (!response2.ok) {
-                window.alert('修改密碼失敗');
-                return
-            }
-        }
-        window.alert('儲存成功');
-    };
-    React.useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const authToken = localStorage.getItem('authToken');
-                const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/dashboardinfo', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `${authToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (response.status === 401) {
-                    alert("請重新登入");
-                    dispatch(logout());
-                    navigate('/login');
-                } else {
-                    const data = await response.json();
-                    
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchData();
-    }
-    , []);
-    return (
-        <div className="container mt-5">
-            <Button variant="outline-secondary" onClick={() => {navigate('/dashboard')}}><i class="bi bi-arrow-return-left"></i>返回管理介面</Button>
-            <h2 className="mb-2">提領款項</h2>
-            <Row className="mb-4 justify-content-center align-items-center" style={{ width: '100%' }}>
-            <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formUsername" className='my-3'>
-                    <Form.Label>Email 地址</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-
-                <Form.Group controlId="formEmail" className='my-3'>
-                    <Form.Label>手機號碼</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formEmail" className='my-3'>
-                    <Form.Label>帳戶名稱</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="accountname"
-                        value={formData.accountname}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formEmail" className='my-3'>
-                    <Form.Label>銀行代碼</Form.Label>
-                    <Form.Select aria-label="Default select example">
-                        <option>銀行代碼</option>
-                        {bankcode.map((item) => (
-                            <option key={item.code} value={item.code}>{item.name}</option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
-                <Form.Group controlId="formPassword" className='my-3'>
-                    <Form.Label>銀行帳號</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="bankaccount"
-                        value={formData.bankaccount}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formPassword" className='my-3'>
-                    <Form.Label>銀行帳號</Form.Label>
-                    <Form.Control
-                        type="password"
-                        name="password2"
-                        value={formData.password2}
-                        onChange={handleChange}
-                        placeholder="Password"
-                    />
-                </Form.Group>
-                <Button variant="dark" type="submit" style={{marginRight:"20px",marginBottom:"20px"}} onClick={handleSubmit}>
-                    送出
-                </Button>
-            </Form>
-            </Row>
-        </div>
-    );
     const bankcode = [
         {
             "code": "004",
@@ -367,6 +205,183 @@ const Withdraw = ({ user }) => {
             "name": "中華民國信用合作社聯合社南區聯合資訊處理中心"
         }
     ]
+    const [formData, setFormData] = useState({
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+            password: '',
+            password2: '',
+        });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        const authToken = localStorage.getItem('authToken');
+        const user_info = {
+            user_id: user.user_id,
+            username: formData.username,
+            email: formData.email,
+            phone: formData.phone,
+            birth: formData.birth,
+        };
+        const response = await fetch(process.env.REACT_APP_API_URL + '/api/user/modifyuser', {
+            method: 'POST',
+            headers: {
+                'Authorization': `${authToken}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user_info),
+            });
+            if(response.status === 401){
+            alert("請重新登入");
+            dispatch(logout());
+            navigate('/login');
+            return
+            }
+        if (!response.ok) {
+            window.alert('修改失敗');
+            return
+        }
+        if (formData.password !== ''){
+            const response2 = await fetch(process.env.REACT_APP_API_URL + '/api/user/modifypass', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${authToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({user_id:user.user_id,password:formData.password}),
+                });
+            if (!response2.ok) {
+                window.alert('修改密碼失敗');
+                return
+            }
+        }
+        window.alert('儲存成功');
+    };
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const authToken = localStorage.getItem('authToken');
+                const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/dashboardinfo', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `${authToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (response.status === 401) {
+                    alert("請重新登入");
+                    dispatch(logout());
+                    navigate('/login');
+                } else {
+                    const data = await response.json();
+                    
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }
+    , []);
+    return (
+        <div className="container mt-5">
+            <Button variant="outline-secondary" onClick={() => {navigate('/dashboard')}}><i class="bi bi-arrow-return-left"></i>返回管理介面</Button>
+            <h2 className="mb-2">提領款項</h2>
+            <Row className="mb-4 justify-content-center align-items-center" style={{ width: '100%' }}>
+                <Col md="6" className="text-center">
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="formUsername" className='my-3'>
+                            <Form.Label>Email 地址</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="formEmail" className='my-3'>
+                            <Form.Label>手機號碼</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formEmail" className='my-3'>
+                            <Form.Label>帳戶名稱</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="accountname"
+                                value={formData.accountname}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formEmail" className='my-3'>
+                            <Form.Label>銀行代碼</Form.Label>
+                            <Form.Select aria-label="Default select example">
+                                <option>銀行代碼</option>
+                                {bankcode.map((item) => (
+                                    <option key={item.code} value={item.code}>{item.name}</option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group controlId="formPassword" className='my-3'>
+                            <Form.Label>銀行帳號</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="bankaccount"
+                                value={formData.bankaccount}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formPassword" className='my-3'>
+                            <Form.Label>銀行帳號</Form.Label>
+                            <Form.Control
+                                type="password"
+                                name="password2"
+                                value={formData.password2}
+                                onChange={handleChange}
+                                placeholder="Password"
+                            />
+                        </Form.Group>
+                        <Button variant="dark" type="submit" style={{marginRight:"20px",marginBottom:"20px"}} onClick={handleSubmit}>
+                            送出
+                        </Button>
+                    </Form>
+                    <Form>
+                        <div key={`default-checkbox`} className="mb-3">
+                            <Form.Check // prettier-ignore
+                            type='checkbox'
+                            id={`default-checkbox`}
+                            label={`我已閱讀並同意服務條款及隱私權政策`}
+                            />
+                        </div>
+                    </Form>
+                </Col>
+                <Col md="6" className="text-center">
+                    <Card className="mb-4">
+                        <Card.Body>
+                            <Card.Title>可提領金額</Card.Title>
+                            <Card.Text>{totalIncome}元</Card.Text>
+                        </Card.Body>
+                    </Card>
+                    <Form.Text >
+                    Your password must be 8-20 characters long, contain letters and numbers,
+                    and must not contain spaces, special characters, or emoji.
+                    </Form.Text>
+                </Col>
+            </Row>
+        </div>
+    );
 };
 const mapStateToProps = (state) => {
     return {

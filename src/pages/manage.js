@@ -75,6 +75,7 @@ function ManageSongs({ user }) {
     e.preventDefault();
     console.log('Search button clicked');
     setSearchword(keyword);
+    setCurrentPage(1);
   }
   useEffect(() => {
     const fetchSongs = async () => {
@@ -362,8 +363,15 @@ function ManageSongs({ user }) {
     }
   };
   const handleoffsale = async () => {
+    const authToken = localStorage.getItem('authToken');
     setLoadingoffsale(true);
-    const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/offsale?id=' + currentSong.song_id);
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/offsale?id=' + currentSong.song_id, {
+      method: 'GET',
+      headers: {
+        'Authorization': `${authToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
     if (response.ok) {
       window.alert('下架成功');
       handleCloseModal2();
@@ -455,6 +463,27 @@ function ManageSongs({ user }) {
             {currentPage < totalPages - 1 && <Pagination.Item onClick={() => paginate(currentPage + 2)}>{currentPage + 2}</Pagination.Item>}
             <Pagination.Next onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} />
             <Pagination.Last onClick={() => paginate(totalPages)} disabled={currentPage === totalPages} />
+            <Form className="d-flex align-items-center"  onSubmit={(e) => {
+              e.preventDefault();
+              const pageNumber = parseInt(e.target.pageInput.value, 10);
+              if (pageNumber >= 1 && pageNumber <= totalPages) {
+                paginate(pageNumber);
+              } else {
+                window.alert(`請輸入 1 到 ${totalPages} 之間的頁碼`);
+              }
+            }}>
+              <FormControl
+
+                type="number"
+                name="pageInput"
+                placeholder="輸入頁碼"
+                min="1"
+                max={totalPages}
+                className="ml-2"
+                style={{ width: '100px' }}
+              />
+              <Button className="ml-2" variant="outline-primary" type="submit">跳轉</Button>
+            </Form>
           </Pagination>
         </>
       )}
