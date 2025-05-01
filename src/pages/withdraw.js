@@ -11,16 +11,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 const Withdraw = ({ user }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [totalIncome, setTotalIncome] = React.useState(100000);
-    const [pendingIncome, setPendingIncome] = React.useState(100000);
-    const [pendingWithdrawals, setPendingWithdrawals] = React.useState(999);
+    const [pendingWithdrawals, setPendingWithdrawals] = React.useState('---');
     const [totalSongs, setTotalSongs] = React.useState(5000);
-    const [loadinginfo, setLoadinginfo] = React.useState(true);
-    const [loadingBestSelling30, setloadingBestSelling30] = React.useState(true);
-    const [loadingBestSelling, setLoadingBestSelling] = React.useState(true);
-    const [bestSelling, setBestSelling] = React.useState([]);
-    const [recentSales, setRecentSales] = React.useState([]);
-    const [bankaccount, setBankaccount] = React.useState([]);
+    const [loadinginfo, setLoadinginfo] = React.useState(false);
+    const [disabled, setdisabled] = React.useState(true);
+    const [agree, setAgree] = React.useState(false);
     const description = ["此處所列為歷史所有收入，包含已提領和未提領之款項。（僅包含個人分潤） ", "此處所列為處理中之款項，因銀行及人工作業時間尚未入帳。作業時間大約１～３天", "此處所列為可提領之款項，如需提領請至提領頁面進行操作。（提領金額需大於1000元）"];
     const currentIncome = 1200; // Example income, replace with dynamic data
     const bankcode = [
@@ -206,37 +201,43 @@ const Withdraw = ({ user }) => {
         }
     ]
     const [formData, setFormData] = useState({
-            username: user.username,
-            email: user.email,
-            phone: user.phone,
-            password: '',
-            password2: '',
+            creator_id: user?user.id:'',
+            email: user?user.email:'',
+            phone: user?user.phone:'',
+            amount: 0,
+            creator_name: user?user.username:'',
+            status: '0',
+            time: '',
+            bank_account_name: '',
+            bank_account: '',
+            bank_code: '',
         });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        if (name === 'amount') {
+            setFormData({
+                ...formData,
+                [name]: parseInt(value),
+            });
+        }else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            });
+        }
     };
     const handleSubmit = async(e) => {
         e.preventDefault();
+        setLoadinginfo(true);
         const authToken = localStorage.getItem('authToken');
-        const user_info = {
-            user_id: user.user_id,
-            username: formData.username,
-            email: formData.email,
-            phone: formData.phone,
-            birth: formData.birth,
-        };
-        const response = await fetch(process.env.REACT_APP_API_URL + '/api/user/modifyuser', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/insertwithdrawinfo', {
             method: 'POST',
             headers: {
                 'Authorization': `${authToken}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(user_info),
+            body: JSON.stringify(formData),
             });
             if(response.status === 401){
             alert("請重新登入");
@@ -245,25 +246,21 @@ const Withdraw = ({ user }) => {
             return
             }
         if (!response.ok) {
-            window.alert('修改失敗');
+            window.alert('送出失敗，請聯絡管理員');
+            setLoadinginfo(false);
             return
         }
-        if (formData.password !== ''){
-            const response2 = await fetch(process.env.REACT_APP_API_URL + '/api/user/modifypass', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `${authToken}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({user_id:user.user_id,password:formData.password}),
-                });
-            if (!response2.ok) {
-                window.alert('修改密碼失敗');
-                return
-            }
-        }
-        window.alert('儲存成功');
+        window.alert('送出成功，款項會在3-5個工作天內入帳');
+        setLoadinginfo(false);
+        navigate('/dashboard');
     };
+    React.useEffect(() => {
+        if (formData.bank_account_name && formData.bank_account && formData.bank_code && formData.amount && formData.email && formData.phone && agree) {
+            setdisabled(false);
+        } else {
+            setdisabled(true);
+        }
+    }, [formData,agree]);
     React.useEffect(() => {
         const fetchData = async () => {
             try {
@@ -281,7 +278,7 @@ const Withdraw = ({ user }) => {
                     navigate('/login');
                 } else {
                     const data = await response.json();
-                    
+                    setPendingWithdrawals(data.withdraw);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -292,12 +289,12 @@ const Withdraw = ({ user }) => {
     , []);
     return (
         <div className="container mt-5">
-            <Button variant="outline-secondary" onClick={() => {navigate('/dashboard')}}><i class="bi bi-arrow-return-left"></i>返回管理介面</Button>
+            <Button variant="outline-secondary" onClick={() => {navigate('/dashboard')}}><i className="bi bi-arrow-return-left"></i>返回管理介面</Button>
             <h2 className="mb-2">提領款項</h2>
             <Row className="mb-4 justify-content-center align-items-center" style={{ width: '100%' }}>
                 <Col md="6" className="text-center">
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="formUsername" className='my-3'>
+                        <Form.Group controlId="formEmail" className='my-3'>
                             <Form.Label>Email 地址</Form.Label>
                             <Form.Control
                                 type="text"
@@ -305,9 +302,6 @@ const Withdraw = ({ user }) => {
                                 value={formData.email}
                                 onChange={handleChange}
                             />
-                        </Form.Group>
-
-                        <Form.Group controlId="formEmail" className='my-3'>
                             <Form.Label>手機號碼</Form.Label>
                             <Form.Control
                                 type="text"
@@ -315,69 +309,78 @@ const Withdraw = ({ user }) => {
                                 value={formData.phone}
                                 onChange={handleChange}
                             />
-                        </Form.Group>
-                        <Form.Group controlId="formEmail" className='my-3'>
                             <Form.Label>帳戶名稱</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="accountname"
-                                value={formData.accountname}
+                                name="bank_account_name"
+                                value={formData.bank_account_name}
                                 onChange={handleChange}
                             />
-                        </Form.Group>
-                        <Form.Group controlId="formEmail" className='my-3'>
                             <Form.Label>銀行代碼</Form.Label>
-                            <Form.Select aria-label="Default select example">
+                            <Form.Select aria-label="Default select example" onChange={handleChange} name="bank_code">
                                 <option>銀行代碼</option>
                                 {bankcode.map((item) => (
-                                    <option key={item.code} value={item.code}>{item.name}</option>
+                                    <option key={item.code} value={item.code + item.code}>{item.name}({item.code})</option>
                                 ))}
                             </Form.Select>
-                        </Form.Group>
-                        <Form.Group controlId="formPassword" className='my-3'>
+
                             <Form.Label>銀行帳號</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="bankaccount"
-                                value={formData.bankaccount}
+                                name="bank_account"
+                                value={formData.bank_account}
                                 onChange={handleChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formPassword" className='my-3'>
-                            <Form.Label>銀行帳號</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="password2"
-                                value={formData.password2}
-                                onChange={handleChange}
-                                placeholder="Password"
-                            />
-                        </Form.Group>
-                        <Button variant="dark" type="submit" style={{marginRight:"20px",marginBottom:"20px"}} onClick={handleSubmit}>
-                            送出
-                        </Button>
-                    </Form>
-                    <Form>
-                        <div key={`default-checkbox`} className="mb-3">
-                            <Form.Check // prettier-ignore
-                            type='checkbox'
-                            id={`default-checkbox`}
-                            label={`我已閱讀並同意服務條款及隱私權政策`}
-                            />
-                        </div>
+                        
                     </Form>
                 </Col>
                 <Col md="6" className="text-center">
-                    <Card className="mb-4">
-                        <Card.Body>
-                            <Card.Title>可提領金額</Card.Title>
-                            <Card.Text>{totalIncome}元</Card.Text>
-                        </Card.Body>
-                    </Card>
-                    <Form.Text >
-                    Your password must be 8-20 characters long, contain letters and numbers,
-                    and must not contain spaces, special characters, or emoji.
-                    </Form.Text>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="formEmail" className='my-3'>
+                            <Card className="mb-4">
+                                <Card.Body>
+                                    <Card.Title>可提領金額</Card.Title>
+                                    <Card.Text>{pendingWithdrawals}元</Card.Text>
+                                </Card.Body>
+                            </Card>
+                            <Form.Label>提領金額</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    name="amount"
+                                    value={formData.amount}
+                                    onChange={handleChange}
+                                    placeholder="請輸入提領金額"
+                                    min={1000}
+                                    max={pendingWithdrawals}
+                                    
+                                />
+                            <Form.Text >
+                            Your password must be 8-20 characters long, contain letters and numbers,
+                            and must not contain spaces, special characters, or emoji.
+                            </Form.Text>
+                            <Form>
+                                <div key={`default-checkbox`} className="mb-3">
+                                    <Form.Check // prettier-ignore
+                                    type='checkbox'
+                                    id={`default-checkbox`}
+                                    label={`我已閱讀並同意服務條款`}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            setAgree(true);
+                                        } else {
+                                            setAgree(false);
+                                        }
+                                    }}
+                                    checked={agree}
+                                    />
+                                </div>
+                            </Form>
+                            <Button variant="dark" type="submit" style={{marginRight:"20px",marginBottom:"20px"}} onClick={handleSubmit} disabled={disabled}>
+                                {loadinginfo ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "確認提領"}
+                            </Button>
+                        </Form.Group>
+                    </Form>
                 </Col>
             </Row>
         </div>

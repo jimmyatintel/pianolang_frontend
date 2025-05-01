@@ -55,9 +55,12 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
       const data2 = await response2.json();
       setCurrentStatus(data2);
       console.log(data2);
-      let mp3name = data.pdf_name.slice(0, -4)+".mp3";
-      mp3name = mp3name.replace(/\(.*?\)/g, "").trim();
-      setmp3link("https://pianolangmusic.s3.us-east-2.amazonaws.com/"+mp3name);
+      const mp3name = data.pdf_name.slice(0, -4);
+      let newmp3name = mp3name.replace(/\(.*?\)/g, "").trim();
+      if (mp3name.includes("(原調)")) {
+        newmp3name = newmp3name+"(原調).mp3";;
+      }
+      setmp3link("https://pianolangmusic.s3.us-east-2.amazonaws.com/"+newmp3name);
       setcoverlink("https://pianolangpic.s3.us-east-2.amazonaws.com/"+data.pdf_name.slice(0, -4)+".png");
     };
 
