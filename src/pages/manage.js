@@ -27,6 +27,7 @@ function ManageSongs({ user }) {
   const [loading3, setLoading3] = useState(false);
   const [loading4, setLoading4] = useState(false);
   const [loadingoffsale, setLoadingoffsale] = useState(false);
+  const [currentmp3name, setCurrentmp3name] = useState('');
   const [newSong, setNewSong] = useState({
     song_name: '',
     author: '',
@@ -125,6 +126,14 @@ function ManageSongs({ user }) {
         youtube_link2: data.youtube_link2,
         pdf_file_name: data.pdf_name,
       }));
+      const mp3name = data.pdf_name.slice(0, -4);
+      let newmp3name = mp3name.replace(/\(.*?\)/g, "").trim();
+      if (mp3name.includes("(原調)")) {
+        newmp3name = newmp3name+"(原調).mp3";;
+      }else {
+        newmp3name = newmp3name+".mp3";
+      }
+      setCurrentmp3name(newmp3name);
       const response2 = await fetch(process.env.REACT_APP_API_URL + '/api/getsongstatus?id=' + songId);
       const data2 = await response2.json();
       setCurrentStatus(data2);
@@ -708,7 +717,7 @@ function ManageSongs({ user }) {
                 />
               </Form.Group>
               {
-                currentStatus.mp3_status === true ? <Form.Text className="text-danger">{ `${currentSong.pdf_file_name.slice(0, -4)}.mp3`}</Form.Text> : ''
+                currentStatus.mp3_status === true ? <Form.Text className="text-danger">{currentmp3name}</Form.Text> : ''
               }
               <Form.Group controlId="pdfFile">
                 <Form.Label>PDF檔案 </Form.Label>
