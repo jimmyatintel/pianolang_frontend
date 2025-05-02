@@ -435,7 +435,8 @@ function ManageSongs({ user }) {
               </tr>
             </thead>
             <tbody>
-              {songs.map(song => (
+
+              {songs.length === 0 ? <tr><td colSpan="7" className="text-center">尚無歌曲</td></tr> : songs.map(song => (
                 <tr key={song.song_id}>
                   <td>
                     <Link to={`/product/${song.song_id}`}>
