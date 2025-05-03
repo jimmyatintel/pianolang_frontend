@@ -188,7 +188,7 @@ function ManageSongs({ user }) {
     const keepprocess = window.confirm('確定要上傳嗎？');
     const havepdf = newSong.pdf_file ? true : false;
     if (havepdf === false) {
-      window.alert('請先上傳PDF檔案');
+      window.alert('請上傳PDF檔案');
       setLoading3(false);
       return;
     }
@@ -727,7 +727,7 @@ function ManageSongs({ user }) {
                 />
               </Form.Group>
               {
-                currentStatus.mp3_status === true ? <Form.Text className="text-danger">{currentmp3name}</Form.Text> : ''
+                currentStatus.mp3_status === true ? <Form.Text className="text-danger">{currentStatus.rule === 0 ? currentmp3name : currentSong.pdf_file_name.slice(0, -4)+".mp3"}</Form.Text> : ''
               }
               <Form.Group controlId="pdfFile">
                 <Form.Label>PDF檔案 </Form.Label>
