@@ -82,8 +82,8 @@ function CreatorOrder({ user }) {
 
   return (
     <Container className={`my-3 ${loading ? 'loading-cursor' : ''}`} style={{ minHeight: '80vh' }}>
-       <Button variant="outline-secondary" onClick={() => {navigate('/dashboard')}}><i class="bi bi-arrow-return-left"></i>返回管理介面</Button>
-      <h1>顧客訂單紀錄</h1>
+       <Button variant="outline-secondary" size="sm" onClick={() => {navigate('/dashboard')}}><i className="bi bi-arrow-return-left"></i>返回管理介面</Button>
+      <h1 className="mt-2">顧客訂單紀錄</h1>
       <Form className="d-flex align-items-center" style={{ width: '100%' }}>
         <FormControl
             type="text"

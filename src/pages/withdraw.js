@@ -289,9 +289,9 @@ const Withdraw = ({ user }) => {
     , []);
     return (
         <div className="container mt-5">
-            <Button variant="outline-secondary" onClick={() => {navigate('/dashboard')}}><i className="bi bi-arrow-return-left"></i>返回管理介面</Button>
-            <h2 className="mb-2">提領款項</h2>
-            <Row className="mb-4 justify-content-center align-items-center" style={{ width: '100%' }}>
+            <Button variant="outline-secondary" size="sm" onClick={() => {navigate('/dashboard')}}><i className="bi bi-arrow-return-left"></i>返回管理介面</Button>
+            <h2 className="mb-2 mt-2">提領款項</h2>
+            <Row className="mb-4 justify-content-center align-items-center" style={{ width: '100%', minHeight: '50vh'}}>
                 <Col md="6" className="text-center">
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formEmail" className='my-3'>
