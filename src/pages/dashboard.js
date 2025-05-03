@@ -127,7 +127,7 @@ const Dashboard = ({ user }) => {
                     </Card>
                 ))}
             </Row>
-            <Row className="mb-2 justify-content-center align-items-center" style={{ width: '100%' }}>
+            <Row className="mb-2 justify-content-center align-items-center" style={{ width: '100%', minHeight: '30vh'}}>
             <Col md="6">
             <h2 className="mb-2">銷量排行</h2>
             {loadingBestSelling ? (

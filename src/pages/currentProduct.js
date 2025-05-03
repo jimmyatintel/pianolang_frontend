@@ -56,11 +56,16 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
       setCurrentStatus(data2);
       console.log(data2);
       const mp3name = data.pdf_name.slice(0, -4);
-      let newmp3name = mp3name.replace(/\(.*?\)/g, "").trim();
-      if (mp3name.includes("(原調)")) {
-        newmp3name = newmp3name+"(原調).mp3";;
+      let newmp3name = ""
+      if (data2.rule === 0) {
+        newmp3name = mp3name.replace(/\(.*?\)/g, "").trim();
+        if (mp3name.includes("(原調)")) {
+          newmp3name = newmp3name+"(原調).mp3";;
+        }else {
+          newmp3name = newmp3name+".mp3";
+        }
       }else {
-        newmp3name = newmp3name+".mp3";
+        newmp3name = mp3name+".mp3";
       }
       setmp3link("https://pianolangmusic.s3.us-east-2.amazonaws.com/"+newmp3name);
       setcoverlink("https://pianolangpic.s3.us-east-2.amazonaws.com/"+data.pdf_name.slice(0, -4)+".png");

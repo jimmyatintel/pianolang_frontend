@@ -185,89 +185,99 @@ function ManageSongs({ user }) {
   const handleSubmit = async (e) => {
     setLoading3(true);
     e.preventDefault();
-    const authToken = localStorage.getItem('authToken'); // Assuming the authToken is stored in localStorage
-    const formData = {
-      song_name: newSong.song_name,
-      author: newSong.author,
-      composer: newSong.composer,
-      lyricist: newSong.lyricist,
-      price: newSong.price,
-      description: newSong.description,
-      mp3: newSong.mp3_file ? `${newSong.pdf_file.name.slice(0, -4)}.mp3` : null,
-      pdf_name: newSong.pdf_file ? newSong.pdf_file.name : null,
-      youtube_link: newSong.youtube_link,
-      youtube_link2: newSong.youtube_link2,
-    };
-    try {
-      if (newSong.mp3_file) {
-        const mp3File = newSong.mp3_file;
-        const mp3FileName = `${newSong.pdf_file.name.slice(0, -4)}.mp3`;
-        const modifiedMp3File = new File([mp3File], mp3FileName, { type: mp3File.type });
-        const formData2 = new FormData();
-        await new Promise((resolve) => {
-          formData2.append('file', modifiedMp3File);
-          resolve();
-        }
-        );
-        const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
-          method: 'POST',
-          headers: {
-            'Authorization': `${authToken}`
-          },
-          body: formData2
-        });
-        if (!response.ok) {
-          console.log('Upload mp3 failed');
-          Window.alert('上傳失敗');
-          return;
-        }
-      }
-      if (newSong.pdf_file) {
-        const pdf = newSong.pdf_file;
-        const modifiedpdf = new File([pdf], pdf.name, { type: pdf.type });
-        const formData2 = new FormData();
-        await new Promise((resolve) => {
-          formData2.append('file', modifiedpdf);
-          resolve();
-        });
-        const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
-          method: 'POST',
-          headers: {
-            'Authorization': `${authToken}`
-          },
-          body: formData2
-        });
-        if (!response.ok) {
-          console.log('Upload pdf failed');
-          Window.alert('上傳失敗');
-          return;
-        }
-      }
-      const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/addnewsong', {
-        method: 'POST',
-        headers: {
-          'Authorization': `${authToken}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-      if (response.ok) {
-        window.alert('上傳成功');
-        handleCloseModal();
-      } else if (response.status === 400) {
-        console.log(formData);
-        const errorData = await response.json();
-        console.log('Upload failed with 400 error:', errorData);
-        window.alert('上傳失敗: ' + errorData.message);
-      } else {
-        console.log('Upload failed with status:', response.status);
-        window.alert('上傳失敗: ' + response.statusText);
-      }
-    } catch (error) {
-      console.error('Error during submission:', error);
-      window.alert('上傳失敗: ' + error.message);
-    } finally {
+    const keepprocess = window.confirm('確定要上傳嗎？');
+    const havepdf = newSong.pdf_file ? true : false;
+    if (havepdf === false) {
+      window.alert('請先上傳PDF檔案');
       setLoading3(false);
+      return;
+    }
+    if (keepprocess && havepdf) {
+      const authToken = localStorage.getItem('authToken'); // Assuming the authToken is stored in localStorage
+      const formData = {
+        song_name: newSong.song_name,
+        author: newSong.author,
+        composer: newSong.composer,
+        lyricist: newSong.lyricist,
+        price: newSong.price,
+        description: newSong.description,
+        mp3: newSong.mp3_file ? `${newSong.pdf_file.name.slice(0, -4)}.mp3` : null,
+        pdf_name: newSong.pdf_file ? newSong.pdf_file.name : null,
+        youtube_link: newSong.youtube_link,
+        youtube_link2: newSong.youtube_link2,
+      };
+      try {
+        if (newSong.mp3_file) {
+          const mp3File = newSong.mp3_file;
+          const mp3FileName = `${newSong.pdf_file.name.slice(0, -4)}.mp3`;
+          const modifiedMp3File = new File([mp3File], mp3FileName, { type: mp3File.type });
+          const formData2 = new FormData();
+          await new Promise((resolve) => {
+            formData2.append('file', modifiedMp3File);
+            resolve();
+          }
+          );
+          const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
+            method: 'POST',
+            headers: {
+              'Authorization': `${authToken}`
+            },
+            body: formData2
+          });
+          if (!response.ok) {
+            console.log('Upload mp3 failed');
+            Window.alert('上傳失敗');
+            return;
+          }
+        }
+        if (newSong.pdf_file) {
+          const pdf = newSong.pdf_file;
+          const modifiedpdf = new File([pdf], pdf.name, { type: pdf.type });
+          const formData2 = new FormData();
+          await new Promise((resolve) => {
+            formData2.append('file', modifiedpdf);
+            resolve();
+          });
+          const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
+            method: 'POST',
+            headers: {
+              'Authorization': `${authToken}`
+            },
+            body: formData2
+          });
+          if (!response.ok) {
+            console.log('Upload pdf failed');
+            Window.alert('上傳失敗');
+            return;
+          }
+        }
+        const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/addnewsong', {
+          method: 'POST',
+          headers: {
+            'Authorization': `${authToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+        if (response.ok) {
+          window.alert('上傳成功');
+          setReload(reload + 1);
+          handleCloseModal();
+        } else if (response.status === 400) {
+          console.log(formData);
+          const errorData = await response.json();
+          console.log('Upload failed with 400 error:', errorData);
+          window.alert('上傳失敗: ' + errorData.message);
+        } else {
+          console.log('Upload failed with status:', response.status);
+          window.alert('上傳失敗: ' + response.statusText);
+        }
+      } catch (error) {
+        console.error('Error during submission:', error);
+        window.alert('上傳失敗: ' + error.message);
+      } finally {
+          setLoading3(false);
+      }
     }
   };
   const handleSubmit2 = async (e) => {

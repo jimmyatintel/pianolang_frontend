@@ -67,14 +67,14 @@ function ProductCardElement(props) {
           </Link>
           <div className="d-flex justify-content-between align-items-center">
             <div className="d-flex justify-content-start align-items-center">
+              <Card.Text className="mb-0">
+                {props.slidePro.author}
+              </Card.Text>
+            </div>
               <Card.Text className="price-new mb-0">
                 {props.slidePro.price}$
               </Card.Text>
-              <Card.Text className="price-old">
-                {!props.slidePro.oldPrice ? "" : props.slidePro.oldPrice}
-              </Card.Text>
-            </div>
-            <ReactStars
+            {/* <ReactStars
               count={5}
               size={24}
               color="gray"
@@ -83,7 +83,7 @@ function ProductCardElement(props) {
               isHalf="true"
               value={5}
               activeColor="#ffd700"
-            />
+            /> */}
           </div>
         </Card.Body>
       </Card>
