@@ -24,6 +24,7 @@ function CreatorOrder({ user }) {
   const [loading3, setLoading3] = useState(false);
   const [loading4, setLoading4] = useState(false);
   const [loadingoffsale, setLoadingoffsale] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     const fetchPages = async () => {
       const authToken = localStorage.getItem('authToken'); // Assuming the authToken is stored in localStorage
@@ -38,6 +39,8 @@ function CreatorOrder({ user }) {
       }else{
         const data = await response.json();
       setTotalSongs(data.num);
+      setTotalPages(Math.ceil(data.num / songsPerPage));
+      console.log(data.num);
       }
     };
     fetchPages();
@@ -77,8 +80,6 @@ function CreatorOrder({ user }) {
   }
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const totalPages = Math.ceil(totalSongs / songsPerPage);
 
   return (
     <Container className={`my-3 ${loading ? 'loading-cursor' : ''}`} style={{ minHeight: '80vh' }}>
@@ -151,7 +152,7 @@ function CreatorOrder({ user }) {
             {currentPage > 2 && <Pagination.Item onClick={() => paginate(currentPage - 2)}>{currentPage - 2}</Pagination.Item>}
             {currentPage > 1 && <Pagination.Item onClick={() => paginate(currentPage - 1)}>{currentPage - 1}</Pagination.Item>}
             <Pagination.Item active>{currentPage}</Pagination.Item>
-            {currentPage < totalPages && <Pagination.Item onClick={() => paginate(currentPage + 1)}>{currentPage + 1}</Pagination.Item>}
+            {currentPage < totalPages && <Pagination.Item onClick={() => paginate(currentPage + 1)} >{currentPage + 1}</Pagination.Item>}
             {currentPage < totalPages - 1 && <Pagination.Item onClick={() => paginate(currentPage + 2)}>{currentPage + 2}</Pagination.Item>}
             <Pagination.Next onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} />
             <Pagination.Last onClick={() => paginate(totalPages)} disabled={currentPage === totalPages} />
