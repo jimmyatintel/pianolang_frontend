@@ -16,7 +16,7 @@ function TopHeader({ cart, user }) {
   useEffect(() => {
     let cartCount = 0;
     cart.forEach((item) => {
-      cartCount += item.qty;
+      cartCount += parseInt(item.qty, 10);
     });
     setCartCounter(cartCount);
     let wishCount = 0;

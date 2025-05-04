@@ -24,25 +24,15 @@ function ProductTrElement(props) {
   const [subTotal, setsubTotal] = useState(0);
 
   useEffect(() => {
-    const input = document.querySelector('input');
-    const subTotalll = inputQty * props.product.price;
-    setsubTotal(subTotal + subTotalll);
-    let subTotShow = input.parentNode.parentNode.children[3];
-    subTotShow.innerHTML = `${subTotalll}`;
-    }, [inputQty, setsubTotal, props.product.price])
+    setsubTotal(inputQty * props.product.price);
+    }, [inputQty, props.product.price])
 
   const onChangeQuantity = (event) => {
     event.preventDefault();
     let btn = event.currentTarget;
     setinputQty(btn.value);
-    adjustQuantity(props.product.id, btn.value);
-    if (btn.value === btn.max) {
-      alert("This is the last quantity for this product");
-    }
-    const subTotall = inputQty * props.product.price;
-    setsubTotal(subTotal + subTotall);
-    let subTotShow = btn.parentNode.parentNode.children[4];
-    subTotShow.innerHTML = `${subTotall}`;
+    adjustQuantity(props.product.id, parseInt(btn.value, 10));
+    setsubTotal(inputQty * props.product.price);
   };
 
   return (
@@ -51,48 +41,29 @@ function ProductTrElement(props) {
         <Link to={`/product/${props.product.id}`}>{props.product.song_name}</Link>
       </td>
       <td className="price-new">{props.product.price}$</td>
-      {!props.isWish ? (
-        <td>
-          <input
-            type="number"
-            id="qty"
-            name="qty"
-            min="1"
-            max={props.product.maxQuantity}
-            step="1"
-            style={{ maxWidth: "50px" }}
-            // defaultValue="1"
-            value={inputQty}
-            onChange={onChangeQuantity}
-          />
-        </td>
-      ) : (
-        ""
-      )}
-      {!props.isWish ? (
-        <td className="subTotalShow">{props.product.price}</td>
-      ) : (
-        ""
-      )}
       <td>
-        {!props.isCart ? (
-          <Button
-            variant="dark"
-            size="sm"
-            onClick={(e) => addToCart(e, props.product, props.product.id)}
-          >
-          </Button>
-        ) : (
-          <Button
-            variant="dark"
-            size="sm"
-            className="ms-2"
-            onClick={(e) => deleteFromCart(e, props.product.id)}
-          >
-            <Icon.Trash></Icon.Trash>
-          </Button>
-        )}
-        
+        <input
+          type="number"
+          id="qty"
+          name="qty"
+          min="1"
+          step="1"
+          style={{ maxWidth: "50px" }}
+          // defaultValue="1"
+          value={inputQty}
+          onChange={onChangeQuantity}
+        />
+      </td>
+      <td className="subTotalShow">{subTotal}</td>
+      <td>
+        <Button
+          variant="dark"
+          size="sm"
+        className="ms-2"
+        onClick={(e) => deleteFromCart(e, props.product.id)}
+      >
+        <Icon.Trash></Icon.Trash>
+      </Button>
       </td>
     </tr>
   );

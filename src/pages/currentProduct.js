@@ -67,8 +67,8 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
       }else {
         newmp3name = mp3name+".mp3";
       }
-      setmp3link("https://pianolangmusic.s3.us-east-2.amazonaws.com/"+newmp3name);
-      setcoverlink("https://pianolangpic.s3.us-east-2.amazonaws.com/"+data.pdf_name.slice(0, -4)+".png");
+      setmp3link("https://pianolangmusic.s3.us-east-2.amazonaws.com/"+encodeURIComponent(newmp3name));
+      setcoverlink("https://pianolangpic.s3.us-east-2.amazonaws.com/"+encodeURIComponent(data.pdf_name.slice(0, -4)+".png"));
     };
 
     fetchProduct();
