@@ -6,17 +6,12 @@ import { connect } from "react-redux";
 
 const NavBar = ({user}) => {
   return (
-    <Navbar expand="lg" bg="white" className="boxShadaw p-3">
+    <Navbar expand="lg" bg="white" className="boxShadaw mobile-nav">
       <Container>
         <Navbar.Brand href="/">
           <img
             alt="logo"
             src={logo}
-            style={{
-              maxHeight: "70px",
-              maxWidth: "100%",
-              height: "auto",
-            }}
             className="logo"
           />
         </Navbar.Brand>
@@ -30,9 +25,16 @@ const NavBar = ({user}) => {
             <Nav.Link href="/contact">Contact</Nav.Link>
           </Nav>
           <Nav className="d-lg-none">
+            {user ? (
             <Nav.Link href="/shoppingCart">
               <i className="fas fa-shopping-cart"></i> 購物車
             </Nav.Link>
+            ) : (
+              <Nav.Link href="/login">
+              <i className="fas fa-shopping-cart"></i> 購物車
+            </Nav.Link>
+            )
+            }
             {user ? (
               <Nav.Link href="/account">
               <i className="fas fa-user"></i> {user.username}

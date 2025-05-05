@@ -9,7 +9,6 @@ import ReactStars from "react-rating-stars-component";
 import ReactPlayer from 'react-player';
 import { useEffect, useState } from "react";
 import nopic from "../images/nopic.png";
-import product1_firstpage from "../images/product1_firstpage.png";
 import { Spinner } from "react-bootstrap";
 const checkS3Url = async (url) => {
   try {
@@ -73,11 +72,7 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
 
     fetchProduct();
   }, [id]);
-  const handleToWish = (e, data) => {
-    e.preventDefault();
-    let btn = e.currentTarget;
-    dispatch({ type: "ADD_TO_WISH", payload: { product: data, button: btn } });
-  };
+
 
   /*const [inputQty, setinputQty] = useState(currentItem.qty);
   const onChangeQuantity = (event) => {
@@ -138,17 +133,7 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
           <hr></hr>
           <Card.Text>{currentItem.description}</Card.Text>
           <ButtonGroup className="mt-5 btnGroup d-flex justify-content-center mb-3 ">
-            <Button
-              variant="dark"
-              className="wish me-3"
-              size="sm"
-              id={currentItem.id}
-              name={currentItem.name}
-              onClick={(e) => handleToWish(e, currentItem)}
-              disabled={currentItem.isAddedToWishlist}
-            >
-              <Icon.Heart color={currentItem.isAddedToWishlist === true ? "red" : "white"}></Icon.Heart>
-            </Button>
+            
             <Button
               variant="dark"
               size="sm"

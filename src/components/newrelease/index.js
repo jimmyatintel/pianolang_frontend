@@ -1,12 +1,5 @@
 import {Tabs,Tab, TabContent, Container } from "react-bootstrap";
-import ProductCard from "../productSlider";
-import latestPro from "../../services/latestProducts";
-import specialPro from "../../services/specialProducts";
-import bestPro from "../../services/bestProducts";
-import offersPro from "../../services/offersProducts";
 import ProductCardElement from "../productSlider/utility";
-import Carousel from "../../../node_modules/react-multi-carousel";
-import { ProductsResponsive } from "../../services/responsive";
 import { Spinner } from 'react-bootstrap';
 import "./style.css";
 import React from "react";

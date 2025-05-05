@@ -14,22 +14,9 @@ function ProductCard(props) {
   let loadProducts = props.loadProducts;
   const dispatch = useDispatch();
 
-  const handleToWish = (e, data) => {
-    e.preventDefault();
-    let btn = e.currentTarget;
-    dispatch({ type: "ADD_TO_WISH", payload: { product: data, button: btn } });
-    data.isAddedToWishlist = true;
-   /* if(data.isAddedToWishlist === true) {
-      btn.setAttribute("disabled", "true");
-      btn.style.color = "red";
-    }*/
-  }
-
   useEffect(() => {
     console.log('ProductCard useEffect triggered');
     loadProducts(slidess);
-    // const wishedProducts = slidess.filter((element) => element.isAddedToWishlist === true);
-    // console.log(wishedProducts);
   }, [loadProducts, slidess]);
 
   return (

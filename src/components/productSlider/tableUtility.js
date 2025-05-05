@@ -17,7 +17,6 @@ function ProductTrElement(props) {
   let addToCart = props.addToCart;
   let adjustQuantity = props.adjustQuantity;
   let deleteFromCart = props.deleteFromCart;
-  let deleteFromWish = props.deleteFromWish;
   const LoadCurrentItem = props.LoadCurrentItem;
 
   const [inputQty, setinputQty] = useState(props.product.qty);

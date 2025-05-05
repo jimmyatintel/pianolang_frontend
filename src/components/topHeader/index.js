@@ -8,10 +8,7 @@ import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 
 function TopHeader({ cart, user }) {
-  //const wishTotal = useRecoilState(wishState);
-  const wish = useSelector((state) => state.rw.wish);
   const [CartCounter, setCartCounter] = useState(0);
-  const [WishCounter, setWishCounter] = useState(0);
 
   useEffect(() => {
     let cartCount = 0;
@@ -19,12 +16,7 @@ function TopHeader({ cart, user }) {
       cartCount += parseInt(item.qty, 10);
     });
     setCartCounter(cartCount);
-    let wishCount = 0;
-    wish.forEach((item) => {
-      wishCount += item.toCountWish;
-    });
-    setWishCounter(wishCount);
-  }, [cart, CartCounter, wish, WishCounter]);
+  }, [cart, CartCounter]);
   const handleClick = (e) => {
     window.alert("請先登入或註冊");
   }
@@ -37,19 +29,8 @@ function TopHeader({ cart, user }) {
               <EnvelopeFill className="me-2"></EnvelopeFill>
               pianolang.service@gmail.com
             </FooterLink>
-            {/* <FooterLink>
-              <PhoneFill className="me-2"></PhoneFill>
-              0595951689
-            </FooterLink> */}
           </Col>
           <Col className="text-end">
-            {/* <Link className="me-5 FooterLink text-white d-none d-md-inline" to="/wishList">
-              <FooterLink>
-                <HeartFill className="me-2"></HeartFill>
-                Wish List
-                <span className="ms-1">({WishCounter})</span>
-              </FooterLink>
-            </Link> */}
             {user ? (
             <Link className="me-5 FooterLink text-white" to="/shoppingCart" >
               <FooterLink>

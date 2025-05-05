@@ -6,6 +6,7 @@ import ProductTrElement from "../components/productSlider/tableUtility";
 import { useDispatch } from 'react-redux';
 import {logout} from "../redux/reducers/user-actions";
 import { useNavigate } from 'react-router-dom';
+import { TruncateWords } from '../components/tool/tool';
 function CartListPage(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,6 +18,15 @@ function CartListPage(props) {
   const [loading, setLoading] = useState(false);
   const [deliver_mail, setDeliver_mail] = useState('');
   const [order_info, setOrder_info] = useState('');
+  const [discountcode, setDiscountcode] = useState('');
+  const handleDiscountcodechange = (e) => {
+    setDiscountcode(e.target.value);
+  }
+  const handleDiscountcodeapply = () => {
+    if (discountcode === 'Pianolang') {
+      setdiscount(10);
+    }
+  }
   useEffect(() => {
     if(user===null){
       alert("請先登入或註冊");
@@ -151,6 +161,13 @@ function CartListPage(props) {
             </div>
             <div className="d-flex justify-content-between mb-3">
               <input type="email" className="form-control" placeholder="請輸入電子郵件" value={user.email} onChange={handleEmailchange} contentEditable={false}/>
+            </div>
+            <div className="d-flex justify-content-between mb-3">
+              <h6 className="fw-normal">折扣碼 :</h6>
+            </div>
+            <div className="d-flex justify-content-between mb-3">
+              <input type="text" className="form-control" placeholder="請輸入折扣碼" value={discountcode} onChange={handleDiscountcodechange} contentEditable={false}/>
+              <Button variant="outline-primary" size="sm" onClick={handleDiscountcodeapply}>適用</Button>
             </div>
             <Button variant="dark" size="md" className="mt-4 w-100" disabled={cart.length === 0} onClick={handleCheckout2}>
               {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "信用卡付款/ATM轉帳/超商付款"}

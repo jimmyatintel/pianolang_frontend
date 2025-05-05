@@ -11,16 +11,13 @@ import "../MainSlider/style.css";
 import { connect } from "react-redux";
 import { addToCart, LoadCurrentItem } from "../../redux/reducers/cart-actios";
 import { useEffect, useState } from "react";
-import default_firstpage from "../../images/product1_firstpage.png";
 import nopic from "../../images/nopic.png";
 
 
 function ProductCardElement(props) {
-  const ClickWish = props.clickWish;
   const addToCart = props.addToCart;
   const LoadCurrentItem = props.LoadCurrentItem;
-  const [coverlink, setcoverlink] = useState(default_firstpage);
-  const [currentStatus, setCurrentStatus] = useState(true);
+  const [coverlink, setcoverlink] = useState();
   // console.log(props.slidePro);
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -32,7 +29,7 @@ function ProductCardElement(props) {
       // const response2 = await fetch(process.env.REACT_APP_API_URL+`/api/getsongstatus?id=${props.slidePro.id}`);
       // const data2 = await response2.json();
       // setCurrentStatus(data2);
-      setcoverlink("https://pianolangpic.s3.us-east-2.amazonaws.com/"+props.slidePro.pdf_name.slice(0, -4)+".png");
+      setcoverlink("https://pianolangpic.s3.us-east-2.amazonaws.com/"+encodeURIComponent(props.slidePro.pdf_name.slice(0, -4)+".png"));
       }, [props.slidePro.pdf_name]);
 
   return (
