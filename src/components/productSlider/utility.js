@@ -38,7 +38,7 @@ function ProductCardElement(props) {
   return (
     <div className="text-center productElement" key={props.slidePro.id}>
       <Card className="border-0 position-relative">
-        <Link to={`/product/${props.slidePro.id}`}>
+        <Link to={`/product/${props.slidePro.id}`} target="_blank" rel="noopener">
         <div className="image-wrapper">
           <Card.Img
             variant="top"

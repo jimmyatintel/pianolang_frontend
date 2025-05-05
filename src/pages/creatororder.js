@@ -20,10 +20,6 @@ function CreatorOrder({ user }) {
   const [keyword, setKeyword] = useState('');
   const [searchword, setSearchword] = useState('');
   const [loading, setLoading] = useState(true);
-  const [loading2, setLoading2] = useState(true);
-  const [loading3, setLoading3] = useState(false);
-  const [loading4, setLoading4] = useState(false);
-  const [loadingoffsale, setLoadingoffsale] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     const fetchPages = async () => {
