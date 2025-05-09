@@ -560,7 +560,7 @@ function ManageSongs({ user }) {
                 required
               />
             </Form.Group>
-            <Form.Group controlId="youtube">
+            <Form.Group controlId="youtube_link">
               <Form.Label>Youtube 連結</Form.Label>
               <Form.Control
                 type="text"
@@ -570,7 +570,7 @@ function ManageSongs({ user }) {
                 required
               />
             </Form.Group>
-            <Form.Group controlId="youtube">
+            <Form.Group controlId="youtube_link2">
               <Form.Label>Youtube 連結2</Form.Label>
               <Form.Control
                 type="text"
@@ -687,7 +687,7 @@ function ManageSongs({ user }) {
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="youtube">
+              <Form.Group controlId="youtube_link">
                 <Form.Label>Youtube 連結1</Form.Label>
                 <Form.Control
                   type="text"
@@ -697,11 +697,11 @@ function ManageSongs({ user }) {
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="youtube2">
+              <Form.Group controlId="youtube_link2">
                 <Form.Label>Youtube 連結2</Form.Label>
                 <Form.Control
                   type="text"
-                  name="youtube_link"
+                  name="youtube_link2"
                   value={currentSong.youtube_link2}
                   onChange={handleInputChange2}
                 />
