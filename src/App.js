@@ -24,7 +24,7 @@ import Withdraw from "./pages/withdraw";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/reducers/user-actions";
 import PrivacyPolicy from "./pages/privacy";
-
+import ComposerList from "./pages/composerlist";
 // ⏰ Idle time (in ms)
 const IDLE_TIMEOUT = 60 * 60 * 1000; // 30 minutes
 
@@ -79,6 +79,7 @@ function App(props) {
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/withdraw" element={<Withdraw />}></Route>
           <Route path="/privacy" element={<PrivacyPolicy />}></Route>
+          <Route path="/composerlist" element={<ComposerList />}></Route>
           <Route path="*" element={<Home />}></Route>
         </Routes>
         <Footer />

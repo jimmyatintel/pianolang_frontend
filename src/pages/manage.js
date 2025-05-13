@@ -277,6 +277,18 @@ function ManageSongs({ user }) {
         window.alert('上傳失敗: ' + error.message);
       } finally {
           setLoading3(false);
+          setNewSong({
+            song_name: '',
+            author: '',
+            composer: '',
+            lyricist: '',
+            price: '',
+            description: '',
+            youtube_link: '',
+            youtube_link2: '',
+            mp3_file: null,
+            pdf_file: null,
+          });
       }
     }
   };
@@ -379,6 +391,18 @@ function ManageSongs({ user }) {
     }
     finally {
       setLoading4(false);
+      setNewSong({
+        song_name: '',
+        author: '',
+        composer: '',
+        lyricist: '',
+        price: '',
+        description: '',
+        youtube_link: '',
+        youtube_link2: '',
+        mp3_file: null,
+        pdf_file: null,
+      });
     }
   };
   const handleoffsale = async () => {
