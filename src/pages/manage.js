@@ -28,6 +28,7 @@ function ManageSongs({ user }) {
   const [loading4, setLoading4] = useState(false);
   const [loadingoffsale, setLoadingoffsale] = useState(false);
   const [currentmp3name, setCurrentmp3name] = useState('');
+  const [showProblem, setShowProblem] = useState(false);
   const [newSong, setNewSong] = useState({
     song_name: '',
     author: '',
@@ -82,11 +83,20 @@ function ManageSongs({ user }) {
     const fetchSongs = async () => {
       setLoading(true);
       const authToken = localStorage.getItem('authToken'); // Assuming the authToken is stored in localStorage
-      const response = await fetch(process.env.REACT_APP_API_URL + `/api/creator/getlist?page=${currentPage}&prepage=${songsPerPage}&keyword=${searchword}`, {
-        headers: {
-          'Authorization': `${authToken}`
-        }
-      });
+      let response;
+      if (showProblem) {
+        response = await fetch(process.env.REACT_APP_API_URL + `/api/creator/getproblemsonglist?page=${currentPage}&prepage=${songsPerPage}`, {
+          headers: {
+            'Authorization': `${authToken}`
+          }
+        });
+      }else{
+        response = await fetch(process.env.REACT_APP_API_URL + `/api/creator/getlist?page=${currentPage}&prepage=${songsPerPage}&keyword=${searchword}`, {
+          headers: {
+            'Authorization': `${authToken}`
+          }
+        });
+      }
       if (response.status === 401) {
         window.alert("請重新登入");
         dispatch(logout());
@@ -98,6 +108,7 @@ function ManageSongs({ user }) {
       }else{
         const data = await response.json();
         setSongs(data.list);
+        setTotalSongs(data.total);
         setLoading(false);
       }
     };
@@ -105,7 +116,21 @@ function ManageSongs({ user }) {
   }, [currentPage, searchword, reload]);
 
   const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setNewSong({
+      song_name: '',
+      author: '',
+      composer: '',
+      lyricist: '',
+      price: '',
+      description: '',
+      youtube_link: '',
+      youtube_link2: '',
+      mp3_file: null,
+      pdf_file: null,
+    });
+  };
   const handleShowModal2 = (e) => {
     setShowModal2(true)
     const fetchInfo = async (songId) => {
@@ -142,7 +167,22 @@ function ManageSongs({ user }) {
     fetchInfo(e.target.name);
 
   };
-  const handleCloseModal2 = () => setShowModal2(false);
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+    setcurrentSong({
+      song_id: '',
+      song_name: '',
+      author: '',
+      composer: '',
+      lyricist: '',
+      price: '',
+      description: '',
+      youtube_link: '',
+      youtube_link2: '',
+      mp3_file: null,
+      pdf_file: null,
+    });
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewSong({ ...newSong, [name]: name === 'price' ? parseInt(value, 10) : value });
@@ -432,7 +472,14 @@ function ManageSongs({ user }) {
   }
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  const handleShowProblem = () => {
+    setLoading(true);
+    setShowProblem(!showProblem);
+    setKeyword('');
+    setSearchword('');
+    setCurrentPage(1);
+    setReload(reload + 1);
+  }
   const totalPages = Math.ceil(totalSongs / songsPerPage);
 
   return (
@@ -450,13 +497,22 @@ function ManageSongs({ user }) {
           value={keyword}
           className="mr-sm-2"
           style={{ width: '20vw', marginRight: '2vw' }}
+          disabled={showProblem}
         />
-        <Button variant="outline-success" type="submit" onClick={handleSearchSubmit}>搜尋</Button>
+        <Button variant="outline-success" type="submit" onClick={handleSearchSubmit} disabled={showProblem}>搜尋</Button>
         {
           searchword !== '' ?
             <Button variant="outline-danger" type="submit" style={{ marginLeft: '2vw' }} onClick={() => { setSearchword(''); setKeyword('') }}>清除</Button>
             : ''
         }
+        <Form.Check // prettier-ignore
+          type="switch"
+          id="custom-switch"
+          label="僅顯示有問題歌曲"
+          onChange={handleShowProblem}
+          checked={showProblem}
+          style={{ marginLeft: '2vw' }}
+        />
       </Form>
       {loading ? (
         <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
