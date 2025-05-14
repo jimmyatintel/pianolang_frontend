@@ -108,7 +108,9 @@ function ManageSongs({ user }) {
       }else{
         const data = await response.json();
         setSongs(data.list);
-        setTotalSongs(data.total);
+        if(showProblem){
+          setTotalSongs(data.total);
+        }
         setLoading(false);
       }
     };
