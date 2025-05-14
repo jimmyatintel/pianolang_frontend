@@ -38,8 +38,8 @@ function ManageSongs({ user }) {
     description: '',
     youtube_link: '',
     youtube_link2: '',
-    mp3_file: null,
-    pdf_file: null,
+    mp3_file: "",
+    pdf_file: "",
   });
   const [currentSong, setcurrentSong] = useState({
     song_id: '',
@@ -51,8 +51,8 @@ function ManageSongs({ user }) {
     description: '',
     youtube_link: '',
     youtube_link2: '',
-    mp3_file: null,
-    pdf_file: null,
+    mp3_file: "",
+    pdf_file: "",
   });
   const [currentStatus, setCurrentStatus] = useState({});
   useEffect(() => {
@@ -129,8 +129,8 @@ function ManageSongs({ user }) {
       description: '',
       youtube_link: '',
       youtube_link2: '',
-      mp3_file: null,
-      pdf_file: null,
+      mp3_file: "",
+      pdf_file: "",
     });
   };
   const handleShowModal2 = (e) => {
@@ -169,7 +169,9 @@ function ManageSongs({ user }) {
     fetchInfo(e.target.name);
 
   };
+
   const handleCloseModal2 = () => {
+
     setShowModal2(false);
     setcurrentSong({
       song_id: '',
@@ -181,8 +183,8 @@ function ManageSongs({ user }) {
       description: '',
       youtube_link: '',
       youtube_link2: '',
-      mp3_file: null,
-      pdf_file: null,
+      mp3_file: "",
+      pdf_file: "",
     });
   };
   const handleInputChange = (e) => {
@@ -249,7 +251,7 @@ function ManageSongs({ user }) {
         youtube_link2: newSong.youtube_link2,
       };
       try {
-        if (newSong.mp3_file) {
+        if (newSong.mp3_file!=="") {
           const mp3File = newSong.mp3_file;
           const mp3FileName = `${newSong.pdf_file.name.slice(0, -4)}.mp3`;
           const modifiedMp3File = new File([mp3File], mp3FileName, { type: mp3File.type });
@@ -272,7 +274,7 @@ function ManageSongs({ user }) {
             return;
           }
         }
-        if (newSong.pdf_file) {
+        if (newSong.pdf_file!=="") {
           const pdf = newSong.pdf_file;
           const modifiedpdf = new File([pdf], pdf.name, { type: pdf.type });
           const formData2 = new FormData();
@@ -338,7 +340,7 @@ function ManageSongs({ user }) {
     setLoading4(true);
     e.preventDefault();
     console.log('Update button clicked');
-    if (currentStatus.pdf_status === false && currentSong.pdf_file === null) {
+    if (currentStatus.pdf_status === false && currentSong.pdf_file === "") {
       window.alert('請上傳PDF檔案');
       setLoading4(false);
       return;
@@ -358,7 +360,7 @@ function ManageSongs({ user }) {
       youtube_link2: currentSong.youtube_link2,
     };
     try {
-      if (currentSong.mp3_file) {
+      if (currentSong.mp3_file!=="") {
         console.log('MP3 file exists');
         console.log(currentSong.mp3_file);
         const mp3File = currentSong.mp3_file;
@@ -383,7 +385,7 @@ function ManageSongs({ user }) {
           return;
         }
       }
-      if (currentSong.pdf_file) {
+      if (currentSong.pdf_file!=="") {
         console.log('PDF file exists');
         console.log(currentSong.pdf_file);
         const pdf = currentSong.pdf_file;
