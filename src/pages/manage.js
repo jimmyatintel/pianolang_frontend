@@ -40,6 +40,7 @@ function ManageSongs({ user }) {
     youtube_link2: '',
     mp3_file: "",
     pdf_file: "",
+    pdf_file_name: "",
   });
   const [currentSong, setcurrentSong] = useState({
     song_id: '',
@@ -131,6 +132,7 @@ function ManageSongs({ user }) {
       youtube_link2: '',
       mp3_file: "",
       pdf_file: "",
+      pdf_file_name: "",
     });
   };
   const handleShowModal2 = (e) => {
@@ -185,6 +187,7 @@ function ManageSongs({ user }) {
       youtube_link2: '',
       mp3_file: "",
       pdf_file: "",
+      pdf_file_name: "",
     });
   };
   const handleInputChange = (e) => {
