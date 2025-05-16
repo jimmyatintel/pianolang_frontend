@@ -438,7 +438,7 @@ function ManageSongs({ user }) {
     }
     finally {
       setLoading4(false);
-      setNewSong({
+      setcurrentSong({
         song_name: '',
         author: '',
         composer: '',
@@ -816,7 +816,7 @@ function ManageSongs({ user }) {
               {
                 currentStatus.mp3_status === true ? <Form.Text className="text-danger">{currentStatus.rule === 0 ? currentmp3name : currentSong.pdf_file_name.slice(0, -4)+".mp3"}</Form.Text> : ''
               }
-              <Form.Group controlId="pdfFile">
+              <Form.Group controlId="pdf_file">
                 <Form.Label>PDF檔案 </Form.Label>
                 <Form.Control
                   type="file"
