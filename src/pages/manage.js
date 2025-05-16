@@ -248,8 +248,8 @@ function ManageSongs({ user }) {
         lyricist: newSong.lyricist,
         price: newSong.price,
         description: newSong.description,
-        mp3: newSong.mp3_file ? `${newSong.pdf_file.name.slice(0, -4)}.mp3` : null,
-        pdf_name: newSong.pdf_file ? newSong.pdf_file.name : null,
+        mp3: newSong.mp3_file ==="" ? `${newSong.pdf_file.name.slice(0, -4)}.mp3` : null,
+        pdf_name: newSong.pdf_file ==="" ? newSong.pdf_file.name : null,
         youtube_link: newSong.youtube_link,
         youtube_link2: newSong.youtube_link2,
       };
@@ -357,8 +357,8 @@ function ManageSongs({ user }) {
       lyricist: currentSong.lyricist,
       price: currentSong.price,
       description: currentSong.description,
-      mp3: currentSong.mp3_file ? `${currentSong.pdf_file_name.slice(0, -4)}.mp3` : null,
-      pdf_name: currentSong.pdf_file ? currentSong.pdf_file.name : null,
+      mp3: currentSong.mp3_file === "" ? `${currentSong.pdf_file_name.slice(0, -4)}.mp3` : null,
+      pdf_name: currentSong.pdf_file ==="" ? currentSong.pdf_file.name : null,
       youtube_link: currentSong.youtube_link,
       youtube_link2: currentSong.youtube_link2,
     };
