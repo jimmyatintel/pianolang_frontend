@@ -814,7 +814,7 @@ function ManageSongs({ user }) {
                 />
               </Form.Group>
               {
-                currentStatus.mp3_status === true && currentSong.mp3_file? <Form.Text className="text-danger">{currentStatus.rule === 0 ? currentmp3name : currentSong.pdf_file_name.slice(0, -4)+".mp3"}</Form.Text> : ''
+                currentStatus.mp3_status === true ? <Form.Text className="text-danger">{currentStatus.rule === 0 ? currentmp3name : currentSong.pdf_file_name.slice(0, -4)+".mp3"}</Form.Text> : ''
               }
               <Form.Group controlId="pdf_file">
                 <Form.Label>PDF檔案 </Form.Label>
@@ -825,7 +825,7 @@ function ManageSongs({ user }) {
                   onChange={handleFileChange2}
                 />
                 {
-                  currentStatus.pdf_status === true && currentSong.pdf_file ? <Form.Text className="text-danger">{currentSong.pdf_file_name}</Form.Text> : ''
+                  currentStatus.pdf_status === true ? <Form.Text className="text-danger">{currentSong.pdf_file_name}</Form.Text> : ''
                 }
 
               </Form.Group>
