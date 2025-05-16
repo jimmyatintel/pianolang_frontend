@@ -333,8 +333,8 @@ function ManageSongs({ user }) {
             description: '',
             youtube_link: '',
             youtube_link2: '',
-            mp3_file: null,
-            pdf_file: null,
+            mp3_file: "",
+            pdf_file: "",
           });
       }
     }
@@ -447,8 +447,8 @@ function ManageSongs({ user }) {
         description: '',
         youtube_link: '',
         youtube_link2: '',
-        mp3_file: null,
-        pdf_file: null,
+        mp3_file: "",
+        pdf_file: "",
       });
     }
   };
