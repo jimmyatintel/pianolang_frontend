@@ -101,12 +101,24 @@ function CartListPage(props) {
       
       const html = await res.text();
       setLoading(false);
-      // Open the HTML form in a new tab
-      const newWindow = window.open();
-      if (newWindow) {
-        newWindow.document.write(html);
-        newWindow.document.close();
-      }
+      
+      // Create a temporary form and submit it
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = process.env.REACT_APP_API_URL + '/api/order/create-ecpay-order';
+      form.target = '_self';
+      
+      // Create a hidden input for the HTML content
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'html';
+      input.value = html;
+      form.appendChild(input);
+      
+      // Append form to body and submit
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
     }
     } catch (err) {
       console.error("Failed to create ECPay order:", err);
