@@ -7,7 +7,7 @@ function Rank(props) {
   return (
       <div>
         {/* <Types /> */}
-        <NewProductc></NewProductc>
+        <NewProductc limit={30}></NewProductc>
         {/* <ProductTabs /> */}
         {/* <ProductCard slides={allProducts} /> */}
         {/* <ClientCarousel /> */}

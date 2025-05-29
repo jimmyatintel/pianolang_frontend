@@ -25,6 +25,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/reducers/user-actions";
 import PrivacyPolicy from "./pages/privacy";
 import ComposerList from "./pages/composerlist";
+import Products from "./pages/products";
+import ServicePolicy from "./pages/policy";
 // ⏰ Idle time (in ms)
 const IDLE_TIMEOUT = 60 * 60 * 1000; // 30 minutes
 
@@ -73,12 +75,14 @@ function App(props) {
           <Route path="/search" element={<SearchPage />}></Route>
           <Route path="/orderlist" element={<OrderList />}></Route>
           <Route path="/manage" element={<ManageSongs></ManageSongs>}></Route>
+          <Route path="/products" element={<Products></Products>}></Route>
           <Route path="/creatororder" element={<CreatorOrder></CreatorOrder>}></Route>
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/ordercomplete/:id" element={<OrderComplete />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/withdraw" element={<Withdraw />}></Route>
           <Route path="/privacy" element={<PrivacyPolicy />}></Route>
+          <Route path="/policy" element={<ServicePolicy />}></Route>
           <Route path="/composerlist" element={<ComposerList />}></Route>
           <Route path="*" element={<Home />}></Route>
         </Routes>

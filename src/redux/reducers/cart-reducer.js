@@ -55,7 +55,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_TO_CART:
       const item = action.payload.item;
       
-      alert(`${item.song_name} is added to cart successfully`);
+      // alert(`${item.song_name} is added to cart successfully`);
       
 
       const inCart = state.cart.find((cartitem) =>

@@ -18,6 +18,7 @@ function ProductCardElement(props) {
   const addToCart = props.addToCart;
   const LoadCurrentItem = props.LoadCurrentItem;
   const [coverlink, setcoverlink] = useState();
+  const [buttonClicked, setButtonClicked] = useState(false);
   // console.log(props.slidePro);
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -48,18 +49,27 @@ function ProductCardElement(props) {
           </div>
         </Link>
         <ButtonGroup className="btnGroup d-flex justify-content-center mb-3 position-absolute">
+          
           <Button
             variant="dark"
             size="sm"
-            onClick={(e) => addToCart(e, props.slidePro, props.slidePro.id)}
+            onClick={(e) => {
+              addToCart(e, props.slidePro, props.slidePro.id);
+              setButtonClicked(true);
+              setTimeout(() => setButtonClicked(false), 2000); // Reset after 2 seconds
+            }}
           >
-            Add to Cart
+            {buttonClicked ? (
+                  <Icon.Check2Circle className="me-2" style={{ animation: 'fadeIn 0.3s ease-in' }} />
+              ) : (
+                '加入購物車'
+              )}
           </Button>
         </ButtonGroup>
         <Card.Body>
           <Link to={`/product/${props.slidePro.id}`}>
             <Card.Title onClick={() => LoadCurrentItem(props.slidePro)}>
-            {truncateText(props.slidePro.song_name, 33)}
+            {truncateText(props.slidePro.song_name, 27)}
             </Card.Title>
           </Link>
           <div className="d-flex justify-content-between align-items-center">

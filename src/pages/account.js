@@ -109,7 +109,7 @@ const AccountModify = ({ user}) => {
                         </Form.Group>
 
                         <Form.Group controlId="formEmail" className='my-3'>
-                            <Form.Label>Email 地址</Form.Label>
+                            <Form.Label>Email 地址 {user.verified===true ? "(已驗證)" : "(未驗證)"}</Form.Label>
                             <Form.Control
                                 type="email"
                                 name="email"
@@ -117,6 +117,11 @@ const AccountModify = ({ user}) => {
                                 onChange={handleChange}
                                 placeholder="Enter email"
                             />
+                            {user.verified===false && 
+                                <Button variant="dark" type="submit" className='ml-4' style={{marginRight:"20px",marginBottom:"20px"}} href='/verifyemail'>
+                                    重新驗證Email
+                                </Button>
+                            }
                         </Form.Group>
                         <Form.Group controlId="formEmail" className='my-3'>
                             <Form.Label>手機號碼</Form.Label>

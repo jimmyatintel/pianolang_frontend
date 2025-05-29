@@ -10,6 +10,8 @@ import ReactPlayer from 'react-player';
 import { useEffect, useState } from "react";
 import nopic from "../images/nopic.png";
 import { Spinner } from "react-bootstrap";
+import AddToCartButton from "../components/addTocartbutton";
+import "./currentProduct.css";
 const checkS3Url = async (url) => {
   try {
       const response = await fetch(url, { method: 'HEAD' });
@@ -36,6 +38,7 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
   const [currentStatus, setCurrentStatus] = useState(null);
   const [mp3link, setmp3link] = useState(null);
   const [coverlink, setcoverlink] = useState(null);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchProduct = async () => {
@@ -100,6 +103,11 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
       </Container>
     );
   }
+  const handleAddToCart = (e, product, id) => {
+    addToCart(e, product, id);
+    setButtonClicked(true);
+    setTimeout(() => setButtonClicked(false), 2000); // Reset after 2 seconds
+  };
   return (
     <Container className="my-3">
       <Card className="border-0 position-relative flex-row flex-column flex-md-row">
@@ -133,14 +141,18 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
           <hr></hr>
           <Card.Text>{currentItem.description}</Card.Text>
           <ButtonGroup className="mt-5 btnGroup d-flex justify-content-center mb-3 ">
-            
             <Button
               variant="dark"
               size="sm"
-              onClick={(e) => addToCart(e, currentItem, currentItem.id)}
+              onClick={(e) => handleAddToCart(e, currentItem, currentItem.id)}
               disabled={currentStatus.pdf_status === false}
+              style={{maxWidth: '300px'}}
             >
-              加入購物車
+              {buttonClicked ? (
+                  <Icon.Check2Circle className="me-2" style={{ animation: 'fadeIn 0.3s ease-in' }} />
+              ) : (
+                '加入購物車'
+              )}
             </Button>
           </ButtonGroup>
         </Card.Body>

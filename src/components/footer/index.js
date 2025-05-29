@@ -60,6 +60,7 @@ function Footer() {
                 pianolang.service@gmail.com
               </FooterLink>
               <FooterLink as="a" target="_blank" rel="noopener noreferrer" href="/privacy">隱私權政策</FooterLink>
+              <FooterLink as="a" target="_blank" rel="noopener noreferrer" href="/policy">使用條款</FooterLink>
             </Column>
           </Col>
         </Row>

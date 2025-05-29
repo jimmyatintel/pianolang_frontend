@@ -38,9 +38,6 @@ function ManageSongs({ user }) {
     description: '',
     youtube_link: '',
     youtube_link2: '',
-    mp3_file: "",
-    pdf_file: "",
-    pdf_file_name: "",
   });
   const [currentSong, setcurrentSong] = useState({
     song_id: '',
@@ -240,64 +237,68 @@ function ManageSongs({ user }) {
       return;
     }
     if (keepprocess && havepdf) {
-      const authToken = localStorage.getItem('authToken'); // Assuming the authToken is stored in localStorage
-      const formData = {
-        song_name: newSong.song_name,
-        author: newSong.author,
-        composer: newSong.composer,
-        lyricist: newSong.lyricist,
-        price: newSong.price,
-        description: newSong.description,
-        mp3: newSong.mp3_file ==="" ? `${newSong.pdf_file.name.slice(0, -4)}.mp3` : null,
-        pdf_name: newSong.pdf_file ==="" ? newSong.pdf_file.name : null,
-        youtube_link: newSong.youtube_link,
-        youtube_link2: newSong.youtube_link2,
-      };
+      const authToken = localStorage.getItem('authToken');
       try {
-        if (newSong.mp3_file!=="") {
+        // First upload the PDF file
+        if (newSong.pdf_file) {
+          const pdf = newSong.pdf_file;
+          const formData2 = new FormData();
+          formData2.append('file', pdf);
+          
+          const pdfResponse = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
+            method: 'POST',
+            headers: {
+              'Authorization': `${authToken}`
+            },
+            body: formData2
+          });
+          
+          if (!pdfResponse.ok) {
+            console.log('Upload pdf failed');
+            window.alert('PDF上傳失敗');
+            setLoading3(false);
+            return;
+          }
+        }
+
+        // Then upload MP3 if exists
+        if (newSong.mp3_file) {
           const mp3File = newSong.mp3_file;
           const mp3FileName = `${newSong.pdf_file.name.slice(0, -4)}.mp3`;
           const modifiedMp3File = new File([mp3File], mp3FileName, { type: mp3File.type });
           const formData2 = new FormData();
-          await new Promise((resolve) => {
-            formData2.append('file', modifiedMp3File);
-            resolve();
-          }
-          );
-          const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
+          formData2.append('file', modifiedMp3File);
+          
+          const mp3Response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
             method: 'POST',
             headers: {
               'Authorization': `${authToken}`
             },
             body: formData2
           });
-          if (!response.ok) {
+          
+          if (!mp3Response.ok) {
             console.log('Upload mp3 failed');
-            Window.alert('上傳失敗');
+            window.alert('MP3上傳失敗');
+            setLoading3(false);
             return;
           }
         }
-        if (newSong.pdf_file!=="") {
-          const pdf = newSong.pdf_file;
-          const modifiedpdf = new File([pdf], pdf.name, { type: pdf.type });
-          const formData2 = new FormData();
-          await new Promise((resolve) => {
-            formData2.append('file', modifiedpdf);
-            resolve();
-          });
-          const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/uploadfile', {
-            method: 'POST',
-            headers: {
-              'Authorization': `${authToken}`
-            },
-            body: formData2
-          });
-          if (!response.ok) {
-            console.log('Upload pdf failed');
-            Window.alert('上傳失敗');
-            return;
-          }
-        }
+
+        // Finally, send the song data
+        const formData = {
+          song_name: newSong.song_name,
+          author: newSong.author,
+          composer: newSong.composer,
+          lyricist: newSong.lyricist,
+          price: newSong.price,
+          description: newSong.description,
+          mp3: newSong.mp3_file ? `${newSong.pdf_file.name.slice(0, -4)}.mp3` : null,
+          pdf_name: newSong.pdf_file.name,
+          youtube_link: newSong.youtube_link,
+          youtube_link2: newSong.youtube_link2,
+        };
+
         const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/addnewsong', {
           method: 'POST',
           headers: {
@@ -306,12 +307,12 @@ function ManageSongs({ user }) {
           },
           body: JSON.stringify(formData)
         });
+
         if (response.ok) {
           window.alert('上傳成功');
           setReload(reload + 1);
           handleCloseModal();
         } else if (response.status === 400) {
-          console.log(formData);
           const errorData = await response.json();
           console.log('Upload failed with 400 error:', errorData);
           window.alert('上傳失敗: ' + errorData.message);
@@ -323,19 +324,19 @@ function ManageSongs({ user }) {
         console.error('Error during submission:', error);
         window.alert('上傳失敗: ' + error.message);
       } finally {
-          setLoading3(false);
-          setNewSong({
-            song_name: '',
-            author: '',
-            composer: '',
-            lyricist: '',
-            price: '',
-            description: '',
-            youtube_link: '',
-            youtube_link2: '',
-            mp3_file: "",
-            pdf_file: "",
-          });
+        setLoading3(false);
+        setNewSong({
+          song_name: '',
+          author: '',
+          composer: '',
+          lyricist: '',
+          price: '',
+          description: '',
+          youtube_link: '',
+          youtube_link2: '',
+          mp3_file: "",
+          pdf_file: "",
+        });
       }
     }
   };
