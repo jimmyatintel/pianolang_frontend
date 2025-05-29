@@ -86,7 +86,7 @@ function CartListPage(props) {
         navigate("/ordercomplete/"+orderData.order_id);
       }
       if (totalPrice !== 0) {
-        const res = await fetch(process.env.REACT_APP_API_URL+"/api/order/create-ecpay-order", {  
+        const res = await fetch(process.env.REACT_APP_API_URL + "/api/order/create-ecpay-order", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -99,27 +99,21 @@ function CartListPage(props) {
           }),
         });
       
-      const html = await res.text();
-      setLoading(false);
+        const html = await res.text();
+        setLoading(false);
       
-      // Create a temporary form and submit it
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = process.env.REACT_APP_API_URL + '/api/order/create-ecpay-order';
-      form.target = '_self';
+        // Insert the HTML form into the DOM and auto-submit it
+        const container = document.createElement("div");
+        container.innerHTML = html;
+        document.body.appendChild(container);
       
-      // Create a hidden input for the HTML content
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'html';
-      input.value = html;
-      form.appendChild(input);
-      
-      // Append form to body and submit
-      document.body.appendChild(form);
-      form.submit();
-      document.body.removeChild(form);
-    }
+        const form = container.querySelector("form");
+        if (form) {
+          form.submit();
+        } else {
+          console.error("No form found in HTML response");
+        }
+      }
     } catch (err) {
       console.error("Failed to create ECPay order:", err);
     }
