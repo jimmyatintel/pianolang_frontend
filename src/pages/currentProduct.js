@@ -159,7 +159,9 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
       </Card>
       <Card.Title>試聽音檔</Card.Title>
       {currentStatus.mp3_status === true ? (
-        <ReactPlayer url={mp3link} width="100%" controls={true} style={{ maxHeight: '100px' }} />
+        <ReactPlayer config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+            onContextMenu={e => e.preventDefault()}
+            url={mp3link} width="100%" controls={true} style={{ maxHeight: '100px' }} />
       ) : (
         <p>音檔不存在</p>
       )}
@@ -177,7 +179,8 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
       {currentItem.youtube_link2 !== "" ? (
         <>
           <Card.Title>試聽連結2</Card.Title>
-          <ReactPlayer url={currentItem.youtube_link2} width="100%" controls={true} />
+            <ReactPlayer 
+            url={currentItem.youtube_link2} width="100%" controls={true} />
         </>
       ) : (
         <></>
