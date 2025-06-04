@@ -78,6 +78,7 @@
   display: block;
 }
 .productElement .image-wrapper {
+  min-width: 200px;
   width: 100%;
   height: 371px; /* Set a fixed height for the image container */
   overflow: hidden; /* Ensures any overflow is hidden */
