@@ -47,7 +47,7 @@ function NewProduct(props) {
             </div>
           ))}
         </div>
-        <Button variant="secondary" onClick={() => window.location.href = '/products'}>查看更多</Button>
+        <Button className="mb-4" variant="secondary" onClick={() => window.location.href = '/products'}>查看更多</Button>
         </Row>
       </Container>
     </div>
