@@ -48,7 +48,12 @@ function App(props) {
       }
     }, IDLE_TIMEOUT);
   };
-
+  useEffect(() => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}, []);
   useEffect(() => {
     const activityEvents = ["mousemove", "mousedown", "keydown", "scroll", "touchstart"];
     activityEvents.forEach(event => window.addEventListener(event, resetTimer));

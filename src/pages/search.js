@@ -30,6 +30,14 @@ const SearchPage = () => {
         return () => clearInterval(interval);
     }, []);
 
+    // Scroll to top on component mount and when search results change
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }, [searchResult]);
+
     const handlechange = (e) => {
         setKeyword(e.target.value);
     }
