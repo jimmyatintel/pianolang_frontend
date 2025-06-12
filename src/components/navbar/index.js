@@ -22,7 +22,7 @@ const NavBar = ({user}) => {
             <Nav.Link href="/ranking">最新上傳</Nav.Link>
             <Nav.Link href="/search">歌曲搜尋</Nav.Link>
             <Nav.Link href="/contact">求譜專區</Nav.Link>
-            <Nav.Link href="/contact">Contact</Nav.Link>
+            <Nav.Link href="/contact">聯絡我們</Nav.Link>
           </Nav>
           <Nav className="d-lg-none">
             {user ? (

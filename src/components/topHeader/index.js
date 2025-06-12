@@ -27,7 +27,7 @@ function TopHeader({ cart, user }) {
           <Col className="text-start d-none d-md-block">
             <FooterLink className="me-5">
               <EnvelopeFill className="me-2"></EnvelopeFill>
-              pianolang.service@gmail.com
+              客服信箱：pianolang.service@gmail.com
             </FooterLink>
           </Col>
           <Col className="text-end">
