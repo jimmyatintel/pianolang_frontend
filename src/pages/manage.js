@@ -27,6 +27,7 @@ function ManageSongs({ user }) {
   const [loading3, setLoading3] = useState(false);
   const [loading4, setLoading4] = useState(false);
   const [loadingoffsale, setLoadingoffsale] = useState(false);
+  const [loadingremovepdf, setLoadingremovepdf] = useState(false);
   const [currentmp3name, setCurrentmp3name] = useState('');
   const [showProblem, setShowProblem] = useState(false);
   const [newSong, setNewSong] = useState({
@@ -475,6 +476,28 @@ function ManageSongs({ user }) {
       setLoadingoffsale(false);
     }
   }
+  const handleremovepdf = async () => {
+    const authToken = localStorage.getItem('authToken');
+    if (!window.confirm('確定要刪除這首歌曲的PDF檔案嗎？')) {
+      return;
+    }
+    setLoadingremovepdf(true);
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/creator/removepdfandcoverstatus?id=' + currentSong.song_id, {
+      method: 'GET',
+      headers: {
+        'Authorization': `${authToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.ok) {
+      window.alert('刪除成功');
+      handleCloseModal2();
+      setLoadingremovepdf(false);
+    } else {
+      window.alert('刪除失敗，請聯絡管理員');
+      setLoadingremovepdf(false);
+    }
+  }
   const handlechange = (e) => {
     setKeyword(e.target.value);
   }
@@ -856,6 +879,9 @@ function ManageSongs({ user }) {
               </Button>
               <Button variant="primary" type="cancel" className='mt-3 ml-4' onClick={handleoffsale}>
                 {loadingoffsale ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : '下架'}
+              </Button>
+              <Button variant="primary" type="cancel" className='mt-3 ml-4' onClick={handleremovepdf}>
+                {loadingremovepdf ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : '刪除PDF'}
               </Button>
             </Form>
           )}
