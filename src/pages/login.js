@@ -72,13 +72,14 @@ function LoginPage(){
             <h2 className="text-center mt-4">Login</h2>
             <Form className="mb-5">
               <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
+                <Form.Label style={{fontSize: '28px'}}>電子郵件帳號</Form.Label>
                 <Form.Control type="email" placeholder="Enter email" className="mb-2" onChange={(e) => setEmail(e.target.value)}/>
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
+                <Form.Label style={{fontSize: '28px'}}>密碼</Form.Label> 
                 <Form.Control type="password" placeholder="Password" className="mb-2" onChange={(e) => setPassword(e.target.value)}/>
+                <a style={{fontSize: '18px'}} href="/forgetpassword">忘記密碼</a>
               </Form.Group>
               <div className="text-center mt-3 mb-5">
               {/* <GoogleLogin
@@ -101,7 +102,7 @@ function LoginPage(){
               <Row className="justify-content-end">
                 <Col xs="auto">
                   <Button variant="dark" type="submit" block onClick={handleLogin} disabled={loading}>
-                    {loading ? 'Loading...' : '登入'}
+                    {loading ? '登入中...' : '登入'}
                   </Button>
                 </Col>
                 <Col xs="auto">
