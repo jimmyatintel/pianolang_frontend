@@ -61,7 +61,7 @@ function TopHeader({ cart, user }) {
               <Link className="me-5 FooterLink text-white" to="/login">
                 <FooterLink>
                   <PersonCircle className="me-2"></PersonCircle>
-                  登入/Login
+                  登入或註冊 /Login or Register
                 </FooterLink>
               </Link>
             )}
