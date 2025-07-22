@@ -36,8 +36,9 @@ function CartListPage(props) {
     cart.forEach((item) => {
       price += item.qty * item.price;
     });
-    setsubTotalPrice(price);
-    setTotalPrice(price - discount);
+    setsubTotalPrice(price/0.9);
+    setTotalPrice(price);
+    setdiscount(price - price/0.9);
     if (cart.length === 0) {
       setdiscount(0);
       let cartShow = document.querySelector(".cartShow");
@@ -156,7 +157,7 @@ function CartListPage(props) {
             </div>
             <div className="d-flex justify-content-between mb-3">
               <h6 className="fw-normal">折扣 :</h6>
-              <span>{discount}$</span>
+              <span>{discount}$ (開幕優惠 9折)</span>
             </div>
             <div className="d-flex justify-content-between fw-bold mb-3">
               <h6>總價 :</h6>

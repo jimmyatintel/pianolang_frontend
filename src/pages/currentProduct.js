@@ -136,7 +136,7 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
           <hr></hr>
           <Card.Text className="price-new mb-0">$ {currentItem.price} NTD</Card.Text>
           <Card.Text className="price-old" style={priceOld}>
-            $ {currentItem.price * 1.2} NTD
+            $ {currentItem.price / 0.9} 新台幣
           </Card.Text>
           <hr></hr>
           <Card.Text>{currentItem.description}</Card.Text>

@@ -117,6 +117,13 @@ function CreatorOrder({ user }) {
                 <th>付款方式</th>
               </tr>
             </thead>
+            {songs.length === 0 ? (
+              <tbody>
+                <tr>
+                  <td colSpan="7" className="text-center">沒有訂單</td>
+                </tr>
+              </tbody>
+            ) : (
             <tbody>
               {songs.map(song => (
                 <tr key={song.order_id}>
@@ -140,7 +147,8 @@ function CreatorOrder({ user }) {
                   <td>{song.payment_method}</td>
                 </tr>
               ))}
-            </tbody>
+              </tbody>
+            )}
           </Table>
           <Pagination>
             <Pagination.First onClick={() => paginate(1)} disabled={currentPage === 1} />
