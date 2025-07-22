@@ -134,10 +134,10 @@ function CurrentProductPage({addToCart, adjustQuantity}) {
             activeColor="#ffd700"
           />
           <hr></hr>
-          <Card.Text className="price-new mb-0">$ {currentItem.price} NTD</Card.Text>
-          <Card.Text className="price-old" style={priceOld}>
+          <Card.Text className="price-new mb-0">$ {currentItem.price / 0.9} 新台幣</Card.Text>
+          {/* <Card.Text className="price-old" style={priceOld}>
             $ {currentItem.price / 0.9} 新台幣
-          </Card.Text>
+          </Card.Text> */}
           <hr></hr>
           <Card.Text>{currentItem.description}</Card.Text>
           <ButtonGroup className="mt-5 btnGroup d-flex justify-content-center mb-3 ">
