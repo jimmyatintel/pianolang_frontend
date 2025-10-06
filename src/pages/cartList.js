@@ -184,14 +184,14 @@ function CartListPage(props) {
               <input type="text" className="form-control" placeholder="請輸入折扣碼" value={discountcode} onChange={handleDiscountcodechange} contentEditable={false}/>
               <Button variant="outline-primary" size="sm" onClick={handleDiscountcodeapply}>適用</Button>
             </div>
-            <div className="d-flex justify-content-between mb-3">
-              <Button variant="dark" size="md" className="mt-4 w-100" disabled={cart.length === 0} onClick={handleCheckout2("CreditCard")}>
+            <div className="d-flex flex-column gap-3 mb-3">
+              <Button variant="dark" size="md" className="w-100" disabled={cart.length === 0} onClick={()=>{handleCheckout2("CreditCard")}}>
                 {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "信用卡付款"}
               </Button>
-              <Button variant="dark" size="md" className="mt-4 w-100" disabled={cart.length === 0} onClick={handleCheckout2("ATM")}>
+              <Button variant="dark" size="md" className="w-100" disabled={cart.length === 0} onClick={()=>{handleCheckout2("ATM")}}>
                 {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "ATM轉帳"}
               </Button>
-              <Button variant="dark" size="md" className="mt-4 w-100" disabled={cart.length === 0} onClick={handleCheckout2("CVS")}>
+              <Button variant="dark" size="md" className="w-100" disabled={cart.length === 0} onClick={()=>{handleCheckout2("CVS")}}>
                 {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "超商付款"}
               </Button>
             </div>
