@@ -61,7 +61,7 @@ function CartListPage(props) {
     console.log(user);
   }, [cart, totalPrice, setTotalPrice, discount, setdiscount]);
 
-  const handleCheckout2 = async () => {
+  const handleCheckout2 = async (paymentType) => {
     setLoading(true);
     try {
       const authToken = localStorage.getItem("authToken");
@@ -87,7 +87,15 @@ function CartListPage(props) {
         navigate("/ordercomplete/"+orderData.order_id);
       }
       if (totalPrice !== 0) {
-        const res = await fetch(process.env.REACT_APP_API_URL + "/api/order/create-ecpay-order", {
+        let url = "";
+        if (paymentType === "CreditCard") {
+          url = process.env.REACT_APP_API_URL + "/api/order/create-ecpay-order-credit-card";
+        } else if (paymentType === "ATM") {
+          url = process.env.REACT_APP_API_URL + "/api/order/create-ecpay-order-atm";
+        } else if (paymentType === "CVS") {
+          url = process.env.REACT_APP_API_URL + "/api/order/create-ecpay-order-cvs";
+        }
+        const res = await fetch(url , {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -176,9 +184,17 @@ function CartListPage(props) {
               <input type="text" className="form-control" placeholder="請輸入折扣碼" value={discountcode} onChange={handleDiscountcodechange} contentEditable={false}/>
               <Button variant="outline-primary" size="sm" onClick={handleDiscountcodeapply}>適用</Button>
             </div>
-            <Button variant="dark" size="md" className="mt-4 w-100" disabled={cart.length === 0} onClick={handleCheckout2}>
-              {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "信用卡付款/ATM轉帳/超商付款"}
-            </Button>
+            <div className="d-flex justify-content-between mb-3">
+              <Button variant="dark" size="md" className="mt-4 w-100" disabled={cart.length === 0} onClick={handleCheckout2("CreditCard")}>
+                {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "信用卡付款"}
+              </Button>
+              <Button variant="dark" size="md" className="mt-4 w-100" disabled={cart.length === 0} onClick={handleCheckout2("ATM")}>
+                {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "ATM轉帳"}
+              </Button>
+              <Button variant="dark" size="md" className="mt-4 w-100" disabled={cart.length === 0} onClick={handleCheckout2("CVS")}>
+                {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />: "超商付款"}
+              </Button>
+            </div>
           </div>
         </Row>
       </Container>
