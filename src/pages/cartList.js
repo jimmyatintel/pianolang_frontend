@@ -36,9 +36,9 @@ function CartListPage(props) {
     cart.forEach((item) => {
       price += item.qty * item.price;
     });
-    setsubTotalPrice(price/0.9);
+    setsubTotalPrice(Math.floor(price/0.9));
     setTotalPrice(price);
-    setdiscount(price - price/0.9);
+    setdiscount(price - Math.floor(price/0.9));
     if (cart.length === 0) {
       setdiscount(0);
       let cartShow = document.querySelector(".cartShow");
